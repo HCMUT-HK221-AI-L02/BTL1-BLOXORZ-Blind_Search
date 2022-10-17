@@ -4,11 +4,11 @@
 ---------------------------------------------------------------------------------------------------
 * Một số link tham khảo
 
+- Kết nối vscode với github
+https://www.youtube.com/playlist?list=PLpPVLI0A0OkLBWbcctmGxxF6VHWSQw1hi
+
 - Tạo môi trường ảo với github
 https://www.youtube.com/watch?v=6W6iY7uUu34&ab_channel=srcode
-
-- Kết nối vscode với github
-https://www.youtube.com/watch?v=3Tn58KQvWtU&ab_channel=DevWorld
 
 - Cài đặt git
 https://phoenixnap.com/kb/how-to-install-git-windows
