@@ -1,0 +1,9 @@
+- Đọc đề bài
+- Thu thập data
+- Xây dựng môi trường code (github + venv)
+---------------------------------------------------------------------------------------------------
+* Mot
+- Tạo một Repository
+https://www.youtube.com/watch?v=6W6iY7uUu34&ab_channel=srcode
+https://www.youtube.com/watch?v=3Tn58KQvWtU&ab_channel=DevWorld
+https://phoenixnap.com/kb/how-to-install-git-windows
