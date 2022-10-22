@@ -11,4 +11,4 @@ class Position:
 
     def dy(self, d):
         # Hàm thay đổi giá trị y
-        return Position(self.x + d, self.y)
+        return Position(self.x, self.y + d)
