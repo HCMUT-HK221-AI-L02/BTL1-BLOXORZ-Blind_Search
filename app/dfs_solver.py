@@ -21,7 +21,7 @@ class DFS_Solver:
         close_list = []
         start_pos = terrain.start
         start_block = Block(start_pos, start_pos)
-        start_node = Node(start_block, move = None, parent = None)
+        start_node = Node(terrain.map, start_block, move = None, parent = None)
         open_list.append(start_node)
         # Tạo vòng lặp giải
         while len(open_list) > 0:
@@ -35,7 +35,11 @@ class DFS_Solver:
             if terrain.done(current_node.block):
                 # Nếu là kết quả thì xuất đáp án
                 path =[]
-                return
+                current = current_node
+                while current is not None:
+                    path.append(current.move)
+                    current = current.parent
+                return path[::-1]
             
             # Nếu không là kết quả thì tạo thêm node con
             children = self.get_children(current_node, terrain)
@@ -49,5 +53,13 @@ class DFS_Solver:
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con
         children = []
+        legal_neighbors = terrain.legal_neighbors(current_node.block)
+        for (legal_neighbor, legal_move) in legal_neighbors:
+            touchedMap = terrain.touch_special_cell(legal_neighbor, current_node.map)
+            if touchedMap == current_node.map:
+                child = Node(map=current_node.map, block=legal_neighbor, move=legal_move, parent=current_node)
+            else:
+                child = Node(map=touchedMap, block=legal_neighbor, move=legal_move, parent=current_node)
+            children.append(child)
         return children
             

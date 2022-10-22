@@ -8,3 +8,4 @@ class Move(enum.Enum):
     Right = 2
     Up = 3
     Down = 4
+    Space = 5
