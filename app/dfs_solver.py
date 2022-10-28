@@ -2,6 +2,7 @@
 from app.block import Block
 from app.node import Node
 from app.terrain import Terrain
+from app.move import Move
 
 # Định nghĩa class DFS_Solver
 class DFS_Solver:
@@ -48,7 +49,15 @@ class DFS_Solver:
                 if child in close_list:
                     continue
                 # Thêm node con vào trong open list (lưu ý thứ tự thêm)
-                open_list.append(child)
+                elif close_list[len(close_list) - 1].move == Move.Down and child.move == Move.Up:
+                    continue
+                elif close_list[len(close_list) - 1].move == Move.Up and child.move == Move.Down:
+                    continue
+                elif close_list[len(close_list) - 1].move == Move.Left and child.move == Move.Right:
+                    continue
+                elif close_list[len(close_list) - 1].move == Move.Right and child.move == Move.Left:
+                    continue
+                open_list.insert(0,child)
 
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con

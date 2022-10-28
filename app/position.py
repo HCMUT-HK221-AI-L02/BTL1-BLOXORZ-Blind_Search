@@ -1,3 +1,4 @@
+import json
 # Định nghĩa class Position
 class Position:
     # Class được dùng để xác định vị trí của phần tử khối
@@ -12,3 +13,6 @@ class Position:
     def dy(self, d):
         # Hàm thay đổi giá trị y
         return Position(self.x, self.y + d)
+
+    def __str__(self):
+        return json.dumps([self.x, self.y])
