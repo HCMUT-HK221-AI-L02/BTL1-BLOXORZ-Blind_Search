@@ -1,5 +1,6 @@
 # Import các file và thư viện liên quan
 from app.position import Position
+import json
 # Định nghĩa class Block
 class Block:
     # Class Block định nghĩa obj có 2 khối có tọa độ, với gốc tọa độ là bottom - left
@@ -47,9 +48,7 @@ class Block:
 
     def dx(self, d1, d2):
         # Dịch chuyển vị trí của khối đơn vị theo phương x
-        newBlock = Block(self.p1.dx(d1), self.p2.dx(d2))
-        
-        return newBlock
+        return Block(self.p1.dx(d1), self.p2.dx(d2))
 
     def dy(self, d1, d2):
         # Dịch chuyển vị trí của khối đơn vị theo phương y
@@ -60,3 +59,6 @@ class Block:
 
     def join_blocK(self):
         pass
+
+    def __str__(self):
+        return json.dumps([str(self.p1), str(self.p2)])

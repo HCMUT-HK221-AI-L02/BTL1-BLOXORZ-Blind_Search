@@ -1,6 +1,4 @@
-from app.block import Block
 from app.position import Position
-from app.terrain import Terrain
 
 class BridgeCell:
     """

@@ -2,7 +2,7 @@
 from app.block import Block
 from app.map import Map
 from app.move import Move
-from app.terrain import Terrain
+import json
 
 # Định nghĩa class Node
 class Node:
@@ -12,3 +12,5 @@ class Node:
         self.parent = parent
         self.map = map
 
+    def __str__(self):
+        json.dumps([str(self.block), str(self.move), str(self.parent), str(self.f), str(self.g), str(self.h)])

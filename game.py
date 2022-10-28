@@ -40,12 +40,17 @@ class Game:
         return path_str
 
 # Chạy kết quả
-if __name__ == '__name__':
+if __name__ == '__main__':
     # Tạo obj terrain
-    terrain = Terrain(level_file = "level/level02.txt")
+    terrain = Terrain(level_file = "level/level01.txt")
     print("Start at: " + str(terrain.start))
     print("End at: " + str(terrain.goal))
     # Tạo obj game
     game = Game(terrain)
+    # print(terrain.height)
+    # print(terrain.width)
+    # print(terrain.soft_bridge_cell)
+    # print(terrain.hard_bridge_cell)
+
     # Giải bài toán vào xuất kết quả
-    game.solve_game
+    game.solve_game()

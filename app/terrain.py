@@ -45,7 +45,8 @@ class Terrain:
     def translate_terrain(self, level_file):
         # Đọc các điểm đặc biệt trên map
         level_json_file = level_file[0:-4] + ".json"
-        jsontext = json.loads(level_json_file.read())
+        f = open(level_json_file, 'r')
+        jsontext = json.loads(f.read())
         num_soft_bridge = len(jsontext["sb"])
         num_hard_bridge = len(jsontext["hb"])
         for i in range(0,num_soft_bridge):
@@ -55,29 +56,63 @@ class Terrain:
             self.hard_bridge_cell.append(BridgeCell(jsontext["hb"][i]))
 
         # Dịch file txt thành obj map
-        newMap = Map()
-        newMap.translate_map(level_file, self)
-        self.map = newMap
+        newMap = self.translate_map(level_file)
+        self.map = newMap.map
         self.height = newMap.height
         self.width = newMap.width
+        f.close()
+
+    def translate_map(self, level_file):
+        file = open(level_file, 'r')
+        newMap = Map()
+        for x, line in enumerate(file):
+            row = []
+            newMap.height += 1
+            w = 0
+            for y, char in enumerate(line):
+                if char == 'S':
+                    self.start = Position(x, y)
+                    row.append(1)
+                elif char == 'T':
+                    self.goal = Position(x, y)
+                    row.append(1)
+                elif char == 'C':
+                    row.append(4)
+                elif char == 'X':
+                    row.append(3)
+                elif char == 'O':
+                    row.append(2)
+                elif char == '0':
+                    row.append(1)
+                elif char == '-':
+                    row.append(0)
+                w += 1
+            newMap.map.append(row)    
+        newMap.width = w
+        file.close()
+        return newMap
+            
 
     def can_hold(self, b: Block) -> bool:
         # Kiểm tra obj block có nằm được trên map không
         can_hold = True
-        if self.map[b.p1.x][b.p1.y] == 0 or self.map[b.p2.x][b.p2.y] == 0:
+        if b.p1.x >= self.width or b.p1.y >= self.height or b.p2.x >= self.width or b.p2.y >= self.height:
             can_hold = False
-        elif b.is_standing() and self.map[b.p1.x][b.p1.y] == 4: # Kiểm tra block có stand trên ô cam hay không
-            can_hold = False
+        else :
+            if self.map[b.p1.y][b.p1.x] == 0 or self.map[b.p2.y][b.p2.x] == 0:
+                can_hold = False
+            elif b.is_standing() and self.map[b.p1.y][b.p1.x] == 4: # Kiểm tra block có stand trên ô cam hay không
+                can_hold = False
 
         return can_hold
 
     def neighbours(self, b: Block) -> list:
         # Liệt kê danh sách các vị trí block ở nước đi tiếp theo
         return [
+            (b.right(), Move.Right),
             (b.up(), Move.Up),
             (b.down(), Move.Down),
-            (b.left(), Move.Left),
-            (b.right(), Move.Right)
+            (b.left(), Move.Left)
         ]
 
     def legal_neighbors(self, b: Block) -> list: 
