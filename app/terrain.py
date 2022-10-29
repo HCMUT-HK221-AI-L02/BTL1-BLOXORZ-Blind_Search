@@ -65,11 +65,11 @@ class Terrain:
     def translate_map(self, level_file):
         file = open(level_file, 'r')
         newMap = Map()
-        for x, line in enumerate(file):
+        for y, line in enumerate(file):
             row = []
             newMap.height += 1
             w = 0
-            for y, char in enumerate(line):
+            for x, char in enumerate(line):
                 if char == 'S':
                     self.start = Position(x, y)
                     row.append(1)

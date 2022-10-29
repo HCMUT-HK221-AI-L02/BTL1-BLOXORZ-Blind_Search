@@ -1,0 +1,6 @@
+Kết quả bài DFS: các node từ đó viết ra path
+Kết quả của GA: dạng chuỗi "LRUD"
+    VD: LRUUDD -> một là rớt đâu đó
+                    hai là còn trên map -> tính khoảng cách đến đích
+
+Các mã gen con có thể dài ngắn khác nhau.

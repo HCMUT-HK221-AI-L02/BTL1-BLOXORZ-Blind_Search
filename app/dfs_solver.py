@@ -3,6 +3,7 @@ from app.block import Block
 from app.node import Node
 from app.terrain import Terrain
 from app.move import Move
+from app.position import Position
 
 # Định nghĩa class DFS_Solver
 class DFS_Solver:
@@ -42,22 +43,23 @@ class DFS_Solver:
                     current = current.parent
                 return path[::-1]
             
-            # Nếu không là kết quả thì tạo thêm node con
+            # Nếu không là kết quả thì tạo thêm node con (lưu ý thứ tự thêm)
             children = self.get_children(current_node, terrain)
+            to_insert = []
             for child in children:
                 # Bỏ qua children này nếu đã nằm trong close list
-                if child in close_list:
+                skip_child = False
+                for closed_child in close_list:
+                    if self.is_same_node(child, closed_child): 
+                        skip_child = True
+                        break
+                if skip_child:
                     continue
-                # Thêm node con vào trong open list (lưu ý thứ tự thêm)
-                elif close_list[len(close_list) - 1].move == Move.Down and child.move == Move.Up:
-                    continue
-                elif close_list[len(close_list) - 1].move == Move.Up and child.move == Move.Down:
-                    continue
-                elif close_list[len(close_list) - 1].move == Move.Left and child.move == Move.Right:
-                    continue
-                elif close_list[len(close_list) - 1].move == Move.Right and child.move == Move.Left:
-                    continue
-                open_list.insert(0,child)
+                # Thêm node con vào trong list tạm
+                to_insert.append(child)
+            # Cập nhật open_list
+            to_insert.extend(open_list)
+            open_list = to_insert
 
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con
@@ -66,9 +68,22 @@ class DFS_Solver:
         for (legal_neighbor, legal_move) in legal_neighbors:
             touchedMap = terrain.touch_special_cell(legal_neighbor, current_node.map)
             if touchedMap == current_node.map:
-                child = Node(map=current_node.map, block=legal_neighbor, move=legal_move, parent=current_node)
+                child = Node(map=current_node.map, block=legal_neighbor, \
+                    move=legal_move, parent=current_node)
             else:
-                child = Node(map=touchedMap, block=legal_neighbor, move=legal_move, parent=current_node)
+                child = Node(map=touchedMap, block=legal_neighbor, \
+                    move=legal_move, parent=current_node)
             children.append(child)
         return children
+
+    def is_same_node(self, node1: Node, node2: Node):
+        is_same_node = False
+        if node1.map == node2.map and self.is_same_position(node1.block.p1, node2.block.p1) and \
+            self.is_same_position(node1.block.p2, node2.block.p2): 
+                is_same_node = True
+        return is_same_node
+
+    def is_same_position(self, p1: Position, p2: Position):
+        if p1.x == p2.x and p1.y == p2.y: return True
+        else: return False
             
