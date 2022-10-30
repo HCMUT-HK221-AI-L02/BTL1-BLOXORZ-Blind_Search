@@ -1,9 +1,11 @@
 # Import các file và thư viện liên quan
+from turtle import width
 from app.block import Block
 from app.position import Position
 from app.specialCell import BridgeCell
 from app.move import Move
 from app.map import Map
+import os
 import json
 
 # Định nghĩa class Terrain
@@ -45,10 +47,16 @@ class Terrain:
     def translate_terrain(self, level_file):
         # Đọc các điểm đặc biệt trên map
         level_json_file = level_file[0:-4] + ".json"
-        f = open(level_json_file, 'r')
-        jsontext = json.loads(f.read())
-        num_soft_bridge = len(jsontext["sb"])
-        num_hard_bridge = len(jsontext["hb"])
+        if os.path.isfile(level_json_file):
+            f = open(level_json_file, 'r')
+            jsontext = json.loads(f.read())
+            num_soft_bridge = len(jsontext["sb"])
+            num_hard_bridge = len(jsontext["hb"])
+            f.close()
+        else:
+            num_soft_bridge = 0
+            num_hard_bridge = 0
+
         for i in range(0,num_soft_bridge):
             self.soft_bridge_cell.append(BridgeCell(jsontext["sb"][i]))
         
@@ -60,7 +68,6 @@ class Terrain:
         self.map = newMap.map
         self.height = newMap.height
         self.width = newMap.width
-        f.close()
 
     def translate_map(self, level_file):
         file = open(level_file, 'r')
@@ -93,13 +100,22 @@ class Terrain:
         return newMap
             
 
-    def can_hold(self, b: Block) -> bool:
+    def can_hold(self, b: Block, m: Map) -> bool:
         # Kiểm tra obj block có nằm được trên map không
         can_hold = True
-        if b.p1.x >= self.width or b.p1.y >= self.height or b.p2.x >= self.width or b.p2.y >= self.height:
+        # if b.p1.x >= self.width or b.p1.y >= self.height or b.p2.x >= self.width or b.p2.y >= self.height:
+        if not(
+            b.p1.x >= 0 and 
+            b.p1.x < self.width and 
+            b.p1.y >= 0 and 
+            b.p1.y < self.height and 
+            b.p2.x >= 0 and 
+            b.p2.x < self.width and 
+            b.p2.y >= 0 and 
+            b.p2.y < self.height):
             can_hold = False
         else :
-            if self.map[b.p1.y][b.p1.x] == 0 or self.map[b.p2.y][b.p2.x] == 0:
+            if m[b.p1.y][b.p1.x] == 0 or m[b.p2.y][b.p2.x] == 0:
                 can_hold = False
             elif b.is_standing() and self.map[b.p1.y][b.p1.x] == 4: # Kiểm tra block có stand trên ô cam hay không
                 can_hold = False
@@ -115,34 +131,38 @@ class Terrain:
             (b.left(), Move.Left)
         ]
 
-    def legal_neighbors(self, b: Block) -> list: 
+    def legal_neighbors(self, b: Block, m: Map) -> list: 
         """
         Trả về danh sách các tuples(Block, Move) hợp lệ
         """
-        return [(n, move) for (n, move) in self.neighbours(b) if self.can_hold(n)]
+        return [(n, move) for (n, move) in self.neighbours(b) if self.can_hold(n,m)]
 
-    def touch_special_cell(self, b: Block, map: Map) -> Map:
+    def touch_special_cell(self, b: Block, map: Map):
         """
         Khi block Bloxorz chạm đến các vị trí đặc biệt như (Soft Bridge, Hard Bridge)
         """
         # Check Block bloxorz standing or not
         if b.is_standing():
             for i in range(0,len(self.soft_bridge_cell)):
-                if b.p1.x == self.soft_bridge_cell[i].pos.x:
-                    newMap = Map.duplicate(map)
+                if (b.p1.x == self.soft_bridge_cell[i].pos.x and b.p1.y == self.soft_bridge_cell[i].pos.y):
+                    newMap = Map()
+                    newMap.duplicate(map)
                     self.soft_bridge_cell[i].active(newMap)
-                    return newMap
+                    return newMap.map
             for j in range(0,len(self.hard_bridge_cell)):
-                if b.p1.x == self.soft_bridge_cell[j].pos.x:
-                    newMap = Map.duplicate(map)
-                    self.soft_bridge_cell[j].active(newMap)
-                    return newMap
+                if (b.p1.x == self.hard_bridge_cell[j].pos.x and b.p1.y == self.hard_bridge_cell[j].pos.y):
+                    newMap = Map()
+                    newMap.duplicate(map)
+                    self.hard_bridge_cell[j].active(newMap)
+                    return newMap.map
         else:
             for i in range(0,len(self.soft_bridge_cell)):
-                if b.p1.x == self.soft_bridge_cell[i].pos.x or b.p2.x == self.soft_bridge_cell[i].pos.x:
-                    newMap = Map.duplicate(map)
+                if ((b.p1.x == self.soft_bridge_cell[i].pos.x and b.p1.y == self.soft_bridge_cell[i].pos.y) or 
+                (b.p2.x == self.soft_bridge_cell[i].pos.x and b.p2.y == self.soft_bridge_cell[i].pos.y)):
+                    newMap = Map()
+                    newMap.duplicate(map)
                     self.soft_bridge_cell[i].active(newMap)
-                    return newMap
+                    return newMap.map
         return map
 
     def done(self, b: Block) -> bool:
