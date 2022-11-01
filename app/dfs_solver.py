@@ -30,6 +30,9 @@ class DFS_Solver:
             # Lấy node đứng đầu stack ra để tính
             # Lưu ý cách thêm node con vào open_list
             current_node = open_list[0]
+            # print(current_node.block)
+            # print(current_node.move)
+            # print("========")
             open_list.pop(0)
             close_list.append(current_node)
 
@@ -64,7 +67,7 @@ class DFS_Solver:
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con
         children = []
-        legal_neighbors = terrain.legal_neighbors(current_node.block)
+        legal_neighbors = terrain.legal_neighbors(current_node.block, current_node.map)
         for (legal_neighbor, legal_move) in legal_neighbors:
             touchedMap = terrain.touch_special_cell(legal_neighbor, current_node.map)
             if touchedMap == current_node.map:
