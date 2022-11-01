@@ -1,12 +1,13 @@
 # Import các file và thư viện liên quan
-from turtle import width
 from app.block import Block
 from app.position import Position
-from app.specialCell import BridgeCell
+from app.bridgeCell import BridgeCell
+from app.splitCell import SplitCell
 from app.move import Move
 from app.map import Map
 import os
 import json
+
 
 # Định nghĩa class Terrain
 class Terrain:
@@ -19,15 +20,17 @@ class Terrain:
     + "X" là ô Hard Bridge
     + "O" là ô Soft Bridge
     + "C" là ô Cam (Block cần nằm trên 2 ô cam liền kề)
+    + "P" là ô Split Cell
 
     ***Class Terrain có chức năng biểu diễn màn chơi, gồm có các dữ liệu sau:
     1) map là array 2 chiều, dùng để mô phỏng các ô đi được và ô đặc biệt
         + mốc tọa độ góc trái trên
         + số 0 là block không được vào
         + số 1 là block được vào
-        + số 2 là block có chức năng Soft Bridge (O)
-        + số 3 là block có chức năng Hard Bridge (X)
-        + số 4 là block các ô màu cam
+        + số 2 là ô có chức năng Soft Bridge (O)
+        + số 3 là ô có chức năng Hard Bridge (X)
+        + số 4 là các ô màu cam
+        + số 5 là ô có chức năng tách khối Bloxorz thành 2 
     2) tọa độ ô bắt đầu
     3) tọa độ ô đích
     4) kích thước ngang (phương X) của bản đồ
@@ -38,6 +41,7 @@ class Terrain:
     goal = None
     soft_bridge_cell = []
     hard_bridge_cell = []
+    split_cell = []
     width = 0
     height = 0
 
@@ -52,8 +56,10 @@ class Terrain:
             jsontext = json.loads(f.read())
             num_soft_bridge = len(jsontext["sb"])
             num_hard_bridge = len(jsontext["hb"])
+            num_split_cell = len(jsontext["sc"])
             f.close()
         else:
+            num_split_cell = 0
             num_soft_bridge = 0
             num_hard_bridge = 0
 
@@ -62,6 +68,9 @@ class Terrain:
         
         for i in range(0,num_hard_bridge):
             self.hard_bridge_cell.append(BridgeCell(jsontext["hb"][i]))
+
+        for i in range(0, num_split_cell):
+            self.split_cell.append(SplitCell(jsontext["sc"][i]))
 
         # Dịch file txt thành obj map
         newMap = self.translate_map(level_file)
@@ -93,6 +102,8 @@ class Terrain:
                     row.append(1)
                 elif char == '-':
                     row.append(0)
+                elif char == 'P':
+                    row.append(5)
                 w += 1
             newMap.map.append(row)    
         newMap.width = w
@@ -124,12 +135,26 @@ class Terrain:
 
     def neighbours(self, b: Block) -> list:
         # Liệt kê danh sách các vị trí block ở nước đi tiếp theo
-        return [
-            (b.right(), Move.Right),
-            (b.up(), Move.Up),
-            (b.down(), Move.Down),
-            (b.left(), Move.Left)
-        ]
+        if b.control == None:
+            return [
+                (b.right(), Move.Right),
+                (b.up(), Move.Up),
+                (b.down(), Move.Down),
+                (b.left(), Move.Left)
+            ]
+        else:
+            return [
+                (b.right(), Move.Right),
+                (b.up(), Move.Up),
+                (b.down(), Move.Down),
+                (b.left(), Move.Left),
+                (b.switch(), Move.Space),
+                (b.right(), Move.Right),
+                (b.up(), Move.Up),
+                (b.down(), Move.Down),
+                (b.left(), Move.Left),
+                (b.switch(), Move.Space)
+            ]
 
     def legal_neighbors(self, b: Block, m: Map) -> list: 
         """
@@ -148,13 +173,25 @@ class Terrain:
                     newMap = Map()
                     newMap.duplicate(map)
                     self.soft_bridge_cell[i].active(newMap)
-                    return newMap.map
+                    return (newMap.map, b)
             for j in range(0,len(self.hard_bridge_cell)):
                 if (b.p1.x == self.hard_bridge_cell[j].pos.x and b.p1.y == self.hard_bridge_cell[j].pos.y):
                     newMap = Map()
                     newMap.duplicate(map)
                     self.hard_bridge_cell[j].active(newMap)
-                    return newMap.map
+                    return (newMap.map, b)
+            for k in range(0,len(self.split_cell)):
+                if (b.p1.x == self.split_cell[k].pos.x and b.p1.y == self.split_cell[k].pos.y):
+                    # if self.split_cell[k].part1.x < self.split_cell[k].part2.x:
+                    #     return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
+                    # elif self.split_cell[k].part1.x == self.split_cell[k].part2.x:
+                    #     if self.split_cell[k].part1.y < self.split_cell[k].part2.y:
+                    #         return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
+                    #     else:
+                    #         return (map, b.split_block(self.split_cell[k].part2, self.split_cell[k].part1))
+                    # else:
+                    #     return (map, b.split_block(self.split_cell[k].part2, self.split_cell[k].part1))
+                    return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
         else:
             for i in range(0,len(self.soft_bridge_cell)):
                 if ((b.p1.x == self.soft_bridge_cell[i].pos.x and b.p1.y == self.soft_bridge_cell[i].pos.y) or 
@@ -162,8 +199,25 @@ class Terrain:
                     newMap = Map()
                     newMap.duplicate(map)
                     self.soft_bridge_cell[i].active(newMap)
-                    return newMap.map
-        return map
+                    return (newMap.map, b)
+        return (map, b)
+    
+    # def touch_split_cell(self, b: Block):
+    #     if b.is_standing():
+    #         for i in range(0,len(self.split_cell)):
+    #             if (b.p1.x == self.split_cell[i].pos.x and b.p1.y == self.split_cell[i].pos.y):
+    #                 if self.split_cell[i].part1.x < self.split_cell[i].part2.x:
+    #                     return b.split_block(self.split_cell[i].part1, self.split_cell[i].part2)
+    #                 elif self.split_cell[i].part1.x == self.split_cell[i].part2.x:
+    #                     if self.split_cell[i].part1.y < self.split_cell[i].part2.y:
+    #                         return b.split_block(self.split_cell[i].part1, self.split_cell[i].part2)
+    #                     else:
+    #                         return b.split_block(self.split_cell[i].part2, self.split_cell[i].part1)
+    #                 else:
+    #                     return b.split_block(self.split_cell[i].part2, self.split_cell[i].part1)
+    #     return b
+
+        
 
     def done(self, b: Block) -> bool:
         # check xem bài toán đã hoàn thành

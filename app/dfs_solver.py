@@ -67,26 +67,41 @@ class DFS_Solver:
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con
         children = []
+
         legal_neighbors = terrain.legal_neighbors(current_node.block, current_node.map)
         for (legal_neighbor, legal_move) in legal_neighbors:
-            touchedMap = terrain.touch_special_cell(legal_neighbor, current_node.map)
-            if touchedMap == current_node.map:
+            (touchedMap, touchSplitCell) = terrain.touch_special_cell(legal_neighbor, current_node.map)
+            # touchSplitCell = terrain.touch_split_cell(legal_neighbor)
+            if touchSplitCell.control != None:
+                if touchSplitCell.can_join():
+                    touchSplitCell = touchSplitCell.join_blocK()
+
+            if touchedMap == current_node.map and touchSplitCell == legal_neighbor:
                 child = Node(map=current_node.map, block=legal_neighbor, \
                     move=legal_move, parent=current_node)
-            else:
+            elif touchedMap != current_node.map:
                 child = Node(map=touchedMap, block=legal_neighbor, \
                     move=legal_move, parent=current_node)
+            elif touchSplitCell != legal_neighbor:
+                child = Node(map=current_node.map, block=touchSplitCell,\
+                    move=legal_move, parent=current_node)
+
             children.append(child)
         return children
 
     def is_same_node(self, node1: Node, node2: Node):
         is_same_node = False
         if node1.map == node2.map and self.is_same_position(node1.block.p1, node2.block.p1) and \
+            self.is_same_control(node1.block, node2.block) and \
             self.is_same_position(node1.block.p2, node2.block.p2): 
                 is_same_node = True
         return is_same_node
 
     def is_same_position(self, p1: Position, p2: Position):
         if p1.x == p2.x and p1.y == p2.y: return True
+        else: return False
+
+    def is_same_control(self, b1: Block, b2: Block):
+        if b1.control == b2.control: return True
         else: return False
             

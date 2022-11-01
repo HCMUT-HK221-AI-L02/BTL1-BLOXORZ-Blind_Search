@@ -1,0 +1,43 @@
+{
+    "sb": [
+        {
+            "pos": [14,3],
+            "toggle": "open",
+            "bridge": [[14,6],[10,2],[11,2]]
+        },
+        {
+            "pos": [13,1],
+            "toggle": "close",
+            "bridge": [[1,6],[2,6]]
+        },
+        {
+            "pos": [13,1],
+            "toggle": "toggle",
+            "bridge": [[8,9]]
+        },
+        {
+            "pos": [0,5],
+            "toggle": "close",
+            "bridge": [[0,3]]
+        },
+        {
+            "pos": [0,5],
+            "toggle": "open",
+            "bridge": [[1,6],[2,6]]
+        }
+    ],
+    "hb": [
+        {
+            "pos": [2,1],
+            "toggle": "close",
+            "bridge": [[4,3]]
+        }
+    ],
+    "sc": [
+        {
+            "pos": [12,7],
+            "part1": [12,7],
+            "part2": [2,2]
+        }
+    ]
+}

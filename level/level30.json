@@ -1,0 +1,26 @@
+{
+    "sb": [],
+    "hb": [
+        {
+            "pos": [14,2],
+            "toggle": "close",
+            "bridge": [[9,6],[12,6]]
+        },
+        {
+            "pos": [14,2],
+            "toggle": "open",
+            "bridge": [[10,3],[11,3]]
+        },
+        {
+            "pos": [1,5],
+            "toggle": "close",
+            "bridge": [[10,3],[11,3]]
+        },
+        {
+            "pos": [12,7],
+            "toggle": "toggle",
+            "bridge": [14,7]
+        }
+    ],
+    "sc": []
+}

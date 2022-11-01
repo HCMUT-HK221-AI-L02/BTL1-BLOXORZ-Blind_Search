@@ -6,5 +6,6 @@
             "toggle": "toggle",
             "bridge": [[3,6]]
         }
-    ]
+    ],
+    "sc": []
 }
