@@ -1,0 +1,6 @@
+* Ghi chú về phần GA:
+- List phải cẩn thận khi copy bằng dấu bằng, vì nó truyền reference
+
+-----------------------------------------------------------------
+* map code:
+- LV1: 780464
