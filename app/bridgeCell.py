@@ -17,12 +17,12 @@ class BridgeCell:
     def active(self, map):
         for b in range(0,len(self.bridge)):
             if self.toggle == "toggle":
-                if map[self.bridge[b].y][self.bridge[b].x] == 1:
-                    map[self.bridge[b].y][self.bridge[b].x] = 0
-                else: map[self.bridge[b].y][self.bridge[b].x] = 1
+                if map.map[self.bridge[b].y][self.bridge[b].x] == 1:
+                    map.map[self.bridge[b].y][self.bridge[b].x] = 0
+                else: map.map[self.bridge[b].y][self.bridge[b].x] = 1
             elif self.toggle == "open":
-                if map[self.bridge[b].y][self.bridge[b].x] == 1:
-                    map[self.bridge[b].y][self.bridge[b].x] = 0
-            elif self.toggle == "close":
-                if map[self.bridge[b].y][self.bridge[b].x] == 0:
-                    map[self.bridge[b].y][self.bridge[b].x] = 1
+                if map.map[self.bridge[b].y][self.bridge[b].x] == 1:
+                    map.map[self.bridge[b].y][self.bridge[b].x] = 0
+            elif self.toggle == "close": # Đóng cầu để block Bloxorz có thể đi qua 
+                if map.map[self.bridge[b].y][self.bridge[b].x] == 0:
+                    map.map[self.bridge[b].y][self.bridge[b].x] = 1

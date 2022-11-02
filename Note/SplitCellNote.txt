@@ -1,0 +1,7 @@
+- Thêm class SplitCell
+- Class Block: 
+    + Thêm việc di chuyển riêng biệt cho 2 khối p1, p2
+    + Thêm các hàm split_block(), join_block(), can_join(), switch()
+- Class Terrain:
+    + Thêm thuộc tính split_cell[]
+    + Thêm phương thức touch_split_cell()
