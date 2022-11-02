@@ -23,6 +23,6 @@ class BridgeCell:
             elif self.toggle == "open":
                 if map.map[self.bridge[b].y][self.bridge[b].x] == 1:
                     map.map[self.bridge[b].y][self.bridge[b].x] = 0
-            elif self.toggle == "close":
+            elif self.toggle == "close": # Đóng cầu để block Bloxorz có thể đi qua 
                 if map.map[self.bridge[b].y][self.bridge[b].x] == 0:
                     map.map[self.bridge[b].y][self.bridge[b].x] = 1
