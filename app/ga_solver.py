@@ -55,19 +55,62 @@ class GA_Solver:
                 population.pop(pick_idx)
                 kill_select_rate.pop(pick_idx)
 
-            # Thực hiện cross over cho đến khi đủ dân số
-                # Nhớ tính fitness và check out of bound cho member mới
-                # Check xem có đáp án
+            # --------------------------------
+            # Cách 1
+
+            # # Thực hiện cross over cho đến khi đủ dân số
+            #     # Nhớ tính fitness và check out of bound cho member mới
+            #     # Check xem có đáp án
+            # cross_select_rate = []
+            # new_child = []
+            # for mem in population: cross_select_rate.append(mem.fitness)                
+            # for i in range(int(self.select_rate*self.mem_number)):
+            #     sID = sID + 1
+            #     p = choices(population, weights = cross_select_rate, k = 1)[0]
+            #     child = Member(sID, path = p.path)
+            #     child.checkFitness(self.terrain)
+            #     new_child.append(child)
+            # population.extend(new_child)
+
+            # ----------------------------------------------------------------
+            # Cách 2
             cross_select_rate = []
+            population_path = []
             new_child = []
-            for mem in population: cross_select_rate.append(mem.fitness)                
-            for i in range(int(self.select_rate*self.mem_number)):
+            population_count = len(population)
+            for mem in population:
+                cross_select_rate.append(mem.fitness)
+                population_path.append(mem.path)
+            while population_count < self.mem_number:
+                p1 = choices(population_path, weights = cross_select_rate, k = 1)[0]
+                p2 = choices(population_path, weights = cross_select_rate, k = 1)[0]
+                min_len = min(len(p1), len(p2))
+                if min_len == 0: keep_len = 0
+                else: keep_len = choice(range(min_len))
+                # Tạo con 1
+                c1 = p1[:keep_len]
+                c1.extend(p2[keep_len:])
                 sID = sID + 1
-                p = choices(population, weights = cross_select_rate, k = 1)[0]
-                child = Member(sID, path = p.path)
+                child = Member(sID, path = c1)
                 child.checkFitness(self.terrain)
+                if child.reach_goal == True:
+                        path = child.path
+                        return path
                 new_child.append(child)
+                population_count = population_count + 1
+                # Tạo con 2
+                c2 = p2[:keep_len]
+                c2.extend(p1[keep_len:])
+                sID = sID + 1
+                child = Member(sID, path = c2)
+                child.checkFitness(self.terrain)
+                if child.reach_goal == True:
+                        path = child.path
+                        return path
+                new_child.append(child)
+                population_count = population_count + 1
             population.extend(new_child)
+            # ---------------------------------
 
             # Thực hiện mutation, tính lại fitness và OOB, check xem có đáp án
             # Tỉ lệ một cá thể bị đột biến là bằng nhau
