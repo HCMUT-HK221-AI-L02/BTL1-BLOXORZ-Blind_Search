@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # Tạo obj terrain
     terrain = Terrain(level_file = "level/level04.txt")
     mem_number = 1000
-    select_rate = 0.2
+    select_rate = 0.3
     evo_rate = 0.01
     print("Start at: " + str(terrain.start))
     print("End at: " + str(terrain.goal))

@@ -4,6 +4,7 @@
 - Khi bridge active, nó cần nhập vào map obj
 - Khi tính fitness, cần cộng 1 vào khoảng cách để tránh 1/0
 - Tính fitness với điều kiện dS/dG vì map04 bị lẩn quản trong 1 khu start
+- Trong test_move lưu lại tọa độ trung bình để tính penalty
 -----------------------------------------------------------------
 * Ghi chú phần cần bổ sung trong GA
 x- Test thử xem mình có thể tái sử dụng các hàm có sẵn không

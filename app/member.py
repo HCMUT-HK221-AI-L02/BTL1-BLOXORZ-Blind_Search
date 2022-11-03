@@ -21,10 +21,15 @@ class Member:
         block = Block(start_pos, start_pos)
         map = terrain.map
         stop_idx = -1
+        remain_rate = 0.9
+        remain_distance_trigger = 2
+        ave_pos = []
         # Di chuyển block, nếu có thay đổi thì update map
         # Nếu bị rớt khỏi map phải dừng lại
         for step in self.path:
             stop_idx = stop_idx + 1
+            # Nếu block bị rớt khỏi map thì dừng lại
+            # Update map nếu có
             if step is None:
                 continue
             elif step == Move.Right: 
@@ -33,6 +38,7 @@ class Member:
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
                     if block.control != None: block = block.join_blocK()
+                    ave_pos.append(block.ave_pos_cal())
                     continue
                 else:
                     stop_idx = stop_idx - 1
@@ -43,6 +49,7 @@ class Member:
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
                     if block.control != None: block = block.join_blocK()
+                    ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
                     stop_idx = stop_idx - 1
@@ -53,6 +60,7 @@ class Member:
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
                     if block.control != None: block = block.join_blocK()
+                    ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
                     stop_idx = stop_idx - 1
@@ -63,6 +71,7 @@ class Member:
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
                     if block.control != None: block = block.join_blocK()
+                    ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
                     stop_idx = stop_idx - 1
@@ -75,19 +84,22 @@ class Member:
                     stop_idx = stop_idx - 1
                     break
             else: continue  
-            # Nếu block bị rớt khỏi map thì dừng lại
-            # Update map nếu có
-        return (block, stop_idx)
+        # Tính penalty rồi trả kết quả
+        remain = 1
+        if len(ave_pos) >= 5:
+            for i in range(4, len(ave_pos)):
+                dis = (ave_pos[i].x - ave_pos[i-4].x)**2 + (ave_pos[i].y - ave_pos[i-4].y)**2
+                dis = dis**(1/2)
+                if dis <= remain_distance_trigger: remain = remain*remain_rate
+        return (block, stop_idx, remain)
     
     def checkFitness(self, terrain: Terrain):
         # Tạo block, chạy thử, đồng thời check reach_goal
-        block = self.test_move(terrain)[0]
+        (block, stop_idx, remain) = self.test_move(terrain)
         # Check xem có out of bound không, nếu có thì thu hồi bước
-        stop_idx = self.test_move(terrain)[1]
         if stop_idx == -1: self.path = []
         elif stop_idx != (len(self.path) - 1): self.path = self.path[:stop_idx]
-        # ----------------------------------------------------------------
-        # Cách 1
+
         # Di chuyển xong, sau đó lấy tọa độ để tính fitness
         ave_px = (block.p1.x + block.p2.x)/2
         ave_py = (block.p1.y + block.p2.y)/2
@@ -97,7 +109,7 @@ class Member:
         # Cách 2
         dStart = (ave_px - terrain.start.x)**2 + (ave_py - terrain.start.y)**2 + 1
         dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 + 1
-        self.fitness = dStart/dGoal
+        self.fitness = remain*(dStart/dGoal)
         # ----------------------------------------------------------------
         # Cách 3
         # self.fitness = 1
