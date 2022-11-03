@@ -117,14 +117,9 @@ class Member:
         self.path.append(next_step)
 
     def evo(self,):
-        # Một cá thể bị đột biến sẽ chọn ngẫu nhiên một bước trong path để đổi ngẫu nhiên
+        # Một cá thể bị đột biến sẽ quay lại 1/3 quảng đường để đi ngẫu nhiên
         if len(self.path) == 0: return
-        evo_idx = choice(range(len(self.path)))
-        legal_step = []
-        for step in Move:
-            legal_step.append(step)
-        legal_step.remove(self.path[evo_idx])
-        self.path[evo_idx] = choice(legal_step)
+        self.path = self.path[:int(len(self.path)*2/3)]
 
     def print_path(self):
         # Chuyển list gồm các obj moves thành string kết quả
