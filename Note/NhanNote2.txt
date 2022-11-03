@@ -1,6 +1,22 @@
 * Ghi chú về phần GA:
 - List phải cẩn thận khi copy bằng dấu bằng, vì nó truyền reference
-
+- Trong terrain lưu thông tin của bridge và split_cell
+- Khi bridge active, nó cần nhập vào map obj
+- Khi tính fitness, cần cộng 1 vào khoảng cách để tránh 1/0
+- Tính fitness với điều kiện dS/dG vì map04 bị lẩn quản trong 1 khu start
+- Trong test_move lưu lại tọa độ trung bình để tính penalty
+-----------------------------------------------------------------
+* Ghi chú phần cần bổ sung trong GA
+x- Test thử xem mình có thể tái sử dụng các hàm có sẵn không
+- Viết phần xử lý hard bridge và soft bridge trước
+    + Trong test_move, sau khi đi được bước đi, check xem có đạp ô đặc biệt ko
+x- Trong phần can_hold check thêm việc đứng trên ô màu cam
+- Ứng xử khi bấm Space
+-----------------------------------------------------------------
+* Thắc mắc khác:
+- Vì sao trong terrain, trong neighbor lại bị lặp
 -----------------------------------------------------------------
 * map code:
 - LV1: 780464
+- LV5: 028431
+- LV8: 499707

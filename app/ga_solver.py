@@ -1,7 +1,6 @@
 # Import các file và thư viện liên quan
 from app.terrain import Terrain
-from app.move import Move
-from ga.member import Member
+from app.member import Member
 from random import choice, choices
 
 # Định nghĩa class GA_Solver
@@ -42,6 +41,7 @@ class GA_Solver:
                 if mem.reach_goal == True:
                     path = mem.path
                     return path
+
             # Thực hiện chọn lọc tự nhiên cho đến khi mất một số lượng nhất định
             # Tính tỉ lệ bị select
             kill_select_rate = []
@@ -54,9 +54,26 @@ class GA_Solver:
                 pick_idx = population.index(pick[0])
                 population.pop(pick_idx)
                 kill_select_rate.pop(pick_idx)
-            # Thực hiện cross over cho đến khi đủ dân số
-                # Nhớ tính fitness và check out of bound cho member mới
-                # Check xem có đáp án
+
+            # --------------------------------
+            # Cách 1
+
+            # # Thực hiện cross over cho đến khi đủ dân số
+            #     # Nhớ tính fitness và check out of bound cho member mới
+            #     # Check xem có đáp án
+            # cross_select_rate = []
+            # new_child = []
+            # for mem in population: cross_select_rate.append(mem.fitness)                
+            # for i in range(int(self.select_rate*self.mem_number)):
+            #     sID = sID + 1
+            #     p = choices(population, weights = cross_select_rate, k = 1)[0]
+            #     child = Member(sID, path = p.path)
+            #     child.checkFitness(self.terrain)
+            #     new_child.append(child)
+            # population.extend(new_child)
+
+            # ----------------------------------------------------------------
+            # Cách 2
             cross_select_rate = []
             population_path = []
             new_child = []
@@ -93,6 +110,8 @@ class GA_Solver:
                 new_child.append(child)
                 population_count = population_count + 1
             population.extend(new_child)
+            # ---------------------------------
+
             # Thực hiện mutation, tính lại fitness và OOB, check xem có đáp án
             # Tỉ lệ một cá thể bị đột biến là bằng nhau
             evo_number = int(len(population)*self.evo_rate)
@@ -103,6 +122,7 @@ class GA_Solver:
                 if mem.reach_goal == True:
                         path = mem.path
                         return path
+
             # In kết quả đại diện cho generation:
             max_fitness = population[0].fitness
             best_mem = population[0]

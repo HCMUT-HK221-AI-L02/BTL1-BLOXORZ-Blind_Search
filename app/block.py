@@ -116,5 +116,10 @@ class Block:
             self.control = "p1"
             return Block(self.p1, self.p2, self.control)
 
+    def ave_pos_cal(self):
+            posx = (self.p1.x + self.p2.x)/2
+            posy = (self.p1.y + self.p2.y)/2
+            return Position(posx, posy)
+
     def __str__(self):
         return json.dumps([str(self.p1), str(self.p2)])

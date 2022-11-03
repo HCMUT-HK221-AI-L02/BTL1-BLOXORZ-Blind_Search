@@ -2,7 +2,7 @@
 # Đây là model giải game Bloxorz bằng thuật toán Genetic Algorithm
 # ----------------------------------------------------------------
 # Import các file và thư viện liên quan
-from ga.ga_solver import GA_Solver
+from app.ga_solver import GA_Solver
 from app.terrain import Terrain
 from app.move import Move
 import time
@@ -45,8 +45,8 @@ class Game:
 # Chạy kết quả
 if __name__ == '__main__':
     # Tạo obj terrain
-    terrain = Terrain(level_file = "level/level01.txt")
-    mem_number = 500
+    terrain = Terrain(level_file = "level/level04.txt")
+    mem_number = 1000
     select_rate = 0.3
     evo_rate = 0.01
     print("Start at: " + str(terrain.start))
