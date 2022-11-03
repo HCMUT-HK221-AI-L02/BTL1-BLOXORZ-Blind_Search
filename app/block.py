@@ -100,6 +100,7 @@ class Block:
                 return Block(self.p2, self.p1)
             else:
                 return Block(self.p1, self.p2)
+        else: return self
 
     def can_join(self):
         x_diff = abs(self.p1.x - self.p2.x)

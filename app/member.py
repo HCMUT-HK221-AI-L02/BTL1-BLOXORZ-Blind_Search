@@ -21,8 +21,9 @@ class Member:
         block = Block(start_pos, start_pos)
         map = terrain.map
         stop_idx = -1
-        remain_rate = 0.9
-        remain_distance_trigger = 2
+        remain_rate = 0.7
+        remain_distance_trigger = 3
+        num_step_back = 5
         ave_pos = []
         # Di chuyển block, nếu có thay đổi thì update map
         # Nếu bị rớt khỏi map phải dừng lại
@@ -86,19 +87,20 @@ class Member:
             else: continue  
         # Tính penalty rồi trả kết quả
         remain = 1
-        if len(ave_pos) >= 5:
-            for i in range(4, len(ave_pos)):
-                dis = (ave_pos[i].x - ave_pos[i-4].x)**2 + (ave_pos[i].y - ave_pos[i-4].y)**2
+        if len(ave_pos) >= num_step_back + 1:
+            for i in range(num_step_back, len(ave_pos)):
+                dis = (ave_pos[i].x - ave_pos[i-num_step_back].x)**2
+                dis = dis + (ave_pos[i].y - ave_pos[i-num_step_back].y)**2
                 dis = dis**(1/2)
                 if dis <= remain_distance_trigger: remain = remain*remain_rate
         return (block, stop_idx, remain)
     
-    def checkFitness(self, terrain: Terrain):
+    def checkFitness(self, terrain: Terrain) -> bool: # False là member sẽ bị kill
         # Tạo block, chạy thử, đồng thời check reach_goal
         (block, stop_idx, remain) = self.test_move(terrain)
         # Check xem có out of bound không, nếu có thì thu hồi bước
-        if stop_idx == -1: self.path = []
-        elif stop_idx != (len(self.path) - 1): self.path = self.path[:stop_idx]
+        if stop_idx == -1: return False
+        elif stop_idx != (len(self.path) - 1): return False
 
         # Di chuyển xong, sau đó lấy tọa độ để tính fitness
         ave_px = (block.p1.x + block.p2.x)/2
@@ -107,9 +109,19 @@ class Member:
         #      + 1 + len(self.path))
         # ----------------------------------------------------------------
         # Cách 2
-        dStart = (ave_px - terrain.start.x)**2 + (ave_py - terrain.start.y)**2 + 1
-        dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 + 1
-        self.fitness = remain*(dStart/dGoal)
+        # dStart = (ave_px - terrain.start.x)**2 + (ave_py - terrain.start.y)**2 + 1
+        dStart = (ave_px - terrain.start.x)**2 + (ave_py - terrain.start.y)**2
+        dStart = dStart**(0.5) + 1
+        # dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 + 1
+        dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2
+        dGoal = dGoal**(0.5) + 1
+        # self.fitness = remain*(dStart/dGoal)
+        # self.fitness = 4*(dStart/dGoal) + remain*remain*len(self.path)
+        self.fitness = remain*len(self.path)*dStart/dGoal
+        if self.fitness > 15:
+            test = True
+        # self.fitness = self.fitness + remain*len(self.path)
+        # self.fitness = dStart/dGoal
         # ----------------------------------------------------------------
         # Cách 3
         # self.fitness = 1
@@ -124,6 +136,7 @@ class Member:
         #         else: self.fitness = self.fitness + 1
         # Check xem đã reach goal
         if terrain.done(block): self.reach_goal = True
+        return True
         
 
     def take_step(self,):
@@ -132,9 +145,7 @@ class Member:
         for step in Move:
             legal_step.append(step)
         next_step = choice(legal_step)
-        new_path = self.path
-        new_path.append(next_step)
-        self.path = new_path
+        self.path.append(next_step)
 
     def evo(self,):
         # Một cá thể bị đột biến sẽ chọn ngẫu nhiên một bước trong path để đổi ngẫu nhiên
