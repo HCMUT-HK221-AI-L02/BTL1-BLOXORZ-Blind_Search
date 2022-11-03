@@ -44,7 +44,7 @@ class Game:
 # Chạy kết quả
 if __name__ == '__main__':
     # Tạo obj terrain
-    terrain = Terrain(level_file = "level/level11.txt")
+    terrain = Terrain(level_file = "level/level03.txt")
     print("Start at: " + str(terrain.start))
     print("End at: " + str(terrain.goal))
     # Tạo obj game
