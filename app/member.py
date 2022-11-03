@@ -1,14 +1,7 @@
-"""
-TODO:
-- Thiếu update map sau khi đạp vào ô đặc biệt
-- test_move chưa cập nhật trường hợp phím Space sẽ làm gì
-"""
-
 # Import các file và thư viện liên quan
 from app.terrain import Terrain
 from app.move import Move
 from app.block import Block
-from app.map import Map
 from random import choice
 
 # Định nghĩa class Member là một cá thể trong quần thể
@@ -36,34 +29,49 @@ class Member:
                 continue
             elif step == Move.Right: 
                 b = block.right()
-                if self.can_hold(b, map): 
-                    block = b
+                # if self.can_hold(b, map): 
+                if terrain.can_hold(b, map):
+                    (map, block) = terrain.touch_special_cell(b, map)
+                    if block.control != None: block = block.join_blocK()
                     continue
                 else:
                     stop_idx = stop_idx - 1
                     break
             elif step == Move.Left:
                 b = block.left()
-                if self.can_hold(b, map): 
-                    block = b
+                # if self.can_hold(b, map): 
+                if terrain.can_hold(b, map):
+                    (map, block) = terrain.touch_special_cell(b, map)
+                    if block.control != None: block = block.join_blocK()
                     continue
                 else: 
                     stop_idx = stop_idx - 1
                     break
             elif step == Move.Down:
                 b = block.down()
-                if self.can_hold(b, map): 
-                    block = b
+                # if self.can_hold(b, map): 
+                if terrain.can_hold(b, map):
+                    (map, block) = terrain.touch_special_cell(b, map)
+                    if block.control != None: block = block.join_blocK()
                     continue
                 else: 
                     stop_idx = stop_idx - 1
                     break
             elif step == Move.Up:
                 b = block.up()
-                if self.can_hold(b, map): 
-                    block = b
+                # if self.can_hold(b, map): 
+                if terrain.can_hold(b, map):
+                    (map, block) = terrain.touch_special_cell(b, map)
+                    if block.control != None: block = block.join_blocK()
                     continue
                 else: 
+                    stop_idx = stop_idx - 1
+                    break
+            elif step == Move.Space:
+                if block.control != None: 
+                    block = block.switch()
+                    continue
+                else:
                     stop_idx = stop_idx - 1
                     break
             else: continue  
@@ -76,16 +84,34 @@ class Member:
         block = self.test_move(terrain)[0]
         # Check xem có out of bound không, nếu có thì thu hồi bước
         stop_idx = self.test_move(terrain)[1]
-        if stop_idx != (len(self.path) - 1): self.path = self.path[:stop_idx]
+        if stop_idx == -1: self.path = []
+        elif stop_idx != (len(self.path) - 1): self.path = self.path[:stop_idx]
+        # ----------------------------------------------------------------
+        # Cách 1
         # Di chuyển xong, sau đó lấy tọa độ để tính fitness
         ave_px = (block.p1.x + block.p2.x)/2
         ave_py = (block.p1.y + block.p2.y)/2
-        self.fitness = 1/((ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 + 1)
-        if self.fitness == 1:
-            pause = 1
+        # self.fitness = 1/((ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 \
+        #      + 1 + len(self.path))
+        # ----------------------------------------------------------------
+        # Cách 2
+        dStart = (ave_px - terrain.start.x)**2 + (ave_py - terrain.start.y)**2 + 1
+        dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2 + 1
+        self.fitness = dStart/dGoal
+        # ----------------------------------------------------------------
+        # Cách 3
+        # self.fitness = 1
+        # if len(self.path) > 0:
+        #     for i in range(len(self.path)):
+        #         if i == 0: self.fitness = self.fitness + 1
+        #         elif self.path[i] == Move.Right and self.path[i-1] == Move.Left: continue
+        #         elif self.path[i] == Move.Left and self.path[i-1] == Move.Right: continue
+        #         elif self.path[i] == Move.Down and self.path[i-1] == Move.Up: continue
+        #         elif self.path[i] == Move.Up and self.path[i-1] == Move.Down: continue
+        #         elif self.path[i] == Move.Space: continue
+        #         else: self.fitness = self.fitness + 1
         # Check xem đã reach goal
-        if block.is_standing() and block.p1.x == terrain.goal.x and block.p1.y == terrain.goal.y: 
-            self.reach_goal = True
+        if terrain.done(block): self.reach_goal = True
         
 
     def take_step(self,):
@@ -108,16 +134,16 @@ class Member:
         legal_step.remove(self.path[evo_idx])
         self.path[evo_idx] = choice(legal_step)
 
-    def can_hold(self, b: Block, map) -> bool:
-        # Kiểm tra obj block có nằm được trên map không
-        if b.p1.x >= (len(map[0])-1) or b.p1.y >= (len(map)-1): return False
-        if b.p1.x < 0 or b.p1.y < 0: return False
-        if b.p2.x >= (len(map[0])-1) or b.p2.y >= (len(map)-1): return False
-        if b.p2.x < 0 or b.p2.y < 0: return False
-        if map[b.p1.y][b.p1.x] == 0 or map[b.p2.y][b.p2.x] == 0: return False
-        # Kiểm tra block có stand trên ô cam hay không
-        if b.is_standing() and map[b.p1.y][b.p1.x] == 4: return False
-        return True
+    # def can_hold(self, b: Block, map) -> bool:
+    #     # Kiểm tra obj block có nằm được trên map không
+    #     if b.p1.x >= (len(map[0])-1) or b.p1.y >= (len(map)-1): return False
+    #     if b.p1.x < 0 or b.p1.y < 0: return False
+    #     if b.p2.x >= (len(map[0])-1) or b.p2.y >= (len(map)-1): return False
+    #     if b.p2.x < 0 or b.p2.y < 0: return False
+    #     if map[b.p1.y][b.p1.x] == 0 or map[b.p2.y][b.p2.x] == 0: return False
+    #     # Kiểm tra block có stand trên ô cam hay không
+    #     if b.is_standing() and map[b.p1.y][b.p1.x] == 4: return False
+    #     return True
 
     def print_path(self):
         # Chuyển list gồm các obj moves thành string kết quả
