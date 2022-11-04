@@ -10,9 +10,9 @@ import time
 # Định nghĩa class Game để làm model giải bài toán
 class Game:
     # Object mô hình giải bài toán, được xác định bởi obj terrain và obj solver
-    def __init__(self, terrain, mem_number, select_rate, evo_rate):
+    def __init__(self, terrain, mem_number, select_rate, duplicate_rate, evo_rate):
         self.terrain = terrain
-        self.solver = GA_Solver(mem_number, select_rate, evo_rate)
+        self.solver = GA_Solver(mem_number, select_rate, duplicate_rate, evo_rate)
 
     def solve_game(self):
         print("-------------------Giai bai toan-------------------------")
@@ -46,11 +46,12 @@ class Game:
 if __name__ == '__main__':
     # Tạo obj terrain
     terrain = Terrain(level_file = "level/level04.txt")
-    mem_number = 1000
-    select_rate = 0.3
-    evo_rate = 0.01
+    mem_number = 2000
+    select_rate = 0.1
+    duplicate_rate = 1
+    evo_rate = 0.05
     print("Start at: " + str(terrain.start))
     print("End at: " + str(terrain.goal))
     # Giải bài toán và xuất kết quả
-    game = Game(terrain, mem_number, select_rate, evo_rate)
+    game = Game(terrain, mem_number, select_rate, duplicate_rate, evo_rate)
     game.solve_game()

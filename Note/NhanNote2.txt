@@ -16,6 +16,15 @@ x- Trong phần can_hold check thêm việc đứng trên ô màu cam
 * Thắc mắc khác:
 - Vì sao trong terrain, trong neighbor lại bị lặp
 -----------------------------------------------------------------
+* Đổi lại kiến trúc GA:
+- Nếu out of bound thì kill luôn, tạo con con để bù lại số lượng
+- Vòng lặp:
+    + Bù cho đủ số lượng
+    + Mỗi member đi một bước
+    + Check fitness, nếu rớt thì kill
+    + Duplicate member
+    + Evo -> check fitness
+-----------------------------------------------------------------
 * map code:
 - LV1: 780464
 - LV5: 028431
