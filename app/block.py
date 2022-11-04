@@ -1,5 +1,4 @@
 # Import các file và thư viện liên quan
-from this import d
 from app.position import Position
 import json
 # Định nghĩa class Block
