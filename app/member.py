@@ -36,7 +36,7 @@ class Member:
                 b = block.right()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else:
@@ -46,7 +46,7 @@ class Member:
                 b = block.left()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
@@ -56,7 +56,7 @@ class Member:
                 b = block.down()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
@@ -66,7 +66,7 @@ class Member:
                 b = block.up()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 

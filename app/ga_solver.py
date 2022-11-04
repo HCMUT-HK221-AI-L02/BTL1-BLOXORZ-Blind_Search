@@ -7,9 +7,8 @@ from random import choice, choices
 class GA_Solver:
     # Class này nhằm giải bài toán, sử dụng dữ liệu đầu vào là terrain được tạo ban đầu,
     # cùng các tham số về GA, xuất kết quả solve là paths
-    def __init__(self, mem_number, select_rate, duplicate_rate, evo_rate):
+    def __init__(self, mem_number, duplicate_rate, evo_rate):
         self.mem_number = mem_number
-        self.select_rate = select_rate
         self.duplicate_rate = duplicate_rate
         self.evo_rate = evo_rate
 

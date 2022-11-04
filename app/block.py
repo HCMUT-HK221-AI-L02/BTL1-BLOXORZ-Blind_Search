@@ -91,7 +91,7 @@ class Block:
         """
         return Block(pos1,pos2,"p1")
 
-    def join_blocK(self):
+    def join_block(self):
         if self.can_join():
             if self.p1.x > self.p2.x:
                 return Block(self.p2, self.p1)

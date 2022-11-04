@@ -50,7 +50,7 @@ class DFS_Solver:
                                 path.append(Move.Space)
                                 list.insert(0, (Move.Space, temp.block, temp.map))
 
-                return (path[::-1], list)
+                return path[::-1]
             
             # Nếu không là kết quả thì tạo thêm node con (lưu ý thứ tự thêm)
             children = self.get_children(current_node, terrain)
@@ -79,7 +79,7 @@ class DFS_Solver:
             (touchedMap, touchSplitCell) = terrain.touch_special_cell(legal_neighbor, current_node.map)
             if touchSplitCell.control != None:
                 if touchSplitCell.can_join():
-                    touchSplitCell = touchSplitCell.join_blocK()
+                    touchSplitCell = touchSplitCell.join_block()
 
             if touchedMap == current_node.map and touchSplitCell == legal_neighbor:
                 child = Node(map=current_node.map, block=legal_neighbor, \
