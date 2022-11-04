@@ -30,9 +30,6 @@ class DFS_Solver:
             # Lấy node đứng đầu stack ra để tính
             # Lưu ý cách thêm node con vào open_list
             current_node = open_list[0]
-            # print(current_node.block)
-            # print(current_node.move)
-            # print("========")
             open_list.pop(0)
             close_list.append(current_node)
 
@@ -40,11 +37,20 @@ class DFS_Solver:
             if terrain.done(current_node.block):
                 # Nếu là kết quả thì xuất đáp án
                 path =[]
+                list = []
                 current = current_node
                 while current is not None:
                     path.append(current.move)
+                    list.insert(0,(current.move, current.block, current.map))
+                    temp = current
                     current = current.parent
-                return path[::-1]
+                    if current != None:
+                        if temp.block.control != None and current.block.control != None:
+                            if temp.block.control != current.block.control and temp.move != Move.Space and current.move != Move.Space:
+                                path.append(Move.Space)
+                                list.insert(0, (Move.Space, temp.block, temp.map))
+
+                return (path[::-1], list)
             
             # Nếu không là kết quả thì tạo thêm node con (lưu ý thứ tự thêm)
             children = self.get_children(current_node, terrain)
@@ -67,11 +73,10 @@ class DFS_Solver:
     def get_children(self, current_node: Node, terrain: Terrain):
         # Lấy ra danh sách node con
         children = []
-
         legal_neighbors = terrain.legal_neighbors(current_node.block, current_node.map)
+
         for (legal_neighbor, legal_move) in legal_neighbors:
             (touchedMap, touchSplitCell) = terrain.touch_special_cell(legal_neighbor, current_node.map)
-            # touchSplitCell = terrain.touch_split_cell(legal_neighbor)
             if touchSplitCell.control != None:
                 if touchSplitCell.can_join():
                     touchSplitCell = touchSplitCell.join_blocK()
