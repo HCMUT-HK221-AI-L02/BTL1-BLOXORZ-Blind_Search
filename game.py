@@ -80,6 +80,7 @@ if __name__ == '__main__':
     level_file = "level/" + lv_input + ".json"
     # Tạo obj terrain
     terrain = Terrain(level_file)
+
     print("Start at: " + str(terrain.start))
     print("End at: " + str(terrain.goal))
     # Tạo obj game

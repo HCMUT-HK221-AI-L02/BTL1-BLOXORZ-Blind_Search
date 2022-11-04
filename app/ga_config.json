@@ -1,0 +1,6 @@
+{
+    "mem_number": 2000,
+    "select_rate": 0.1,
+    "duplicate_rate": 1,
+    "evo_rate": 0.05
+}
