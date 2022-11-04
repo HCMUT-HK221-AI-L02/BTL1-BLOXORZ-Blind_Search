@@ -45,14 +45,14 @@ class Terrain:
     width = 0
     height = 0
 
-    def __init__(self, level_file = "level/level01.txt"):
+    def __init__(self, level_file = "level/level01.json"):
         self.translate_terrain(level_file)
 
     def translate_terrain(self, level_file):
         # Đọc các điểm đặc biệt trên map
-        level_json_file = level_file[0:-4] + ".json"
-        if os.path.isfile(level_json_file):
-            f = open(level_json_file, 'r')
+        # level_json_file = level_file[0:-4] + ".json"
+        if os.path.isfile(level_file):
+            f = open(level_file, 'r')
             jsontext = json.loads(f.read())
             num_soft_bridge = len(jsontext["sb"])
             num_hard_bridge = len(jsontext["hb"])
@@ -80,29 +80,30 @@ class Terrain:
 
     def translate_map(self, level_file):
         file = open(level_file, 'r')
+        jsonObj = json.loads(file.read())
         newMap = Map()
-        for y, line in enumerate(file):
+        for y in range(0,len(jsonObj["map"])):
             row = []
             newMap.height += 1
             w = 0
-            for x, char in enumerate(line):
-                if char == 'S':
+            for x in range(0,len(jsonObj["map"][y])):
+                if jsonObj["map"][y][x] == 'S':
                     self.start = Position(x, y)
                     row.append(1)
-                elif char == 'T':
+                elif jsonObj["map"][y][x] == 'T':
                     self.goal = Position(x, y)
                     row.append(1)
-                elif char == 'C':
+                elif jsonObj["map"][y][x] == 'C':
                     row.append(4)
-                elif char == 'X':
+                elif jsonObj["map"][y][x] == 'X':
                     row.append(3)
-                elif char == 'O':
+                elif jsonObj["map"][y][x] == 'O':
                     row.append(2)
-                elif char == '0':
+                elif jsonObj["map"][y][x] == 0:
                     row.append(1)
-                elif char == '-':
+                elif jsonObj["map"][y][x] == '-':
                     row.append(0)
-                elif char == 'P':
+                elif jsonObj["map"][y][x] == 'P':
                     row.append(5)
                 w += 1
             newMap.map.append(row)    
@@ -166,58 +167,30 @@ class Terrain:
         """
         Khi block Bloxorz chạm đến các vị trí đặc biệt như (Soft Bridge, Hard Bridge)
         """
+        newMap = Map()
+        newMap.duplicate(map)
+        change = False
         # Check Block bloxorz standing or not
         if b.is_standing():
             for i in range(0,len(self.soft_bridge_cell)):
                 if (b.p1.x == self.soft_bridge_cell[i].pos.x and b.p1.y == self.soft_bridge_cell[i].pos.y):
-                    newMap = Map()
-                    newMap.duplicate(map)
+                    change = True
                     self.soft_bridge_cell[i].active(newMap)
-                    return (newMap.map, b)
             for j in range(0,len(self.hard_bridge_cell)):
                 if (b.p1.x == self.hard_bridge_cell[j].pos.x and b.p1.y == self.hard_bridge_cell[j].pos.y):
-                    newMap = Map()
-                    newMap.duplicate(map)
                     self.hard_bridge_cell[j].active(newMap)
-                    return (newMap.map, b)
+                    change = True
             for k in range(0,len(self.split_cell)):
                 if (b.p1.x == self.split_cell[k].pos.x and b.p1.y == self.split_cell[k].pos.y):
-                    # if self.split_cell[k].part1.x < self.split_cell[k].part2.x:
-                    #     return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
-                    # elif self.split_cell[k].part1.x == self.split_cell[k].part2.x:
-                    #     if self.split_cell[k].part1.y < self.split_cell[k].part2.y:
-                    #         return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
-                    #     else:
-                    #         return (map, b.split_block(self.split_cell[k].part2, self.split_cell[k].part1))
-                    # else:
-                    #     return (map, b.split_block(self.split_cell[k].part2, self.split_cell[k].part1))
                     return (map, b.split_block(self.split_cell[k].part1, self.split_cell[k].part2))
         else:
             for i in range(0,len(self.soft_bridge_cell)):
                 if ((b.p1.x == self.soft_bridge_cell[i].pos.x and b.p1.y == self.soft_bridge_cell[i].pos.y) or 
                 (b.p2.x == self.soft_bridge_cell[i].pos.x and b.p2.y == self.soft_bridge_cell[i].pos.y)):
-                    newMap = Map()
-                    newMap.duplicate(map)
+                    change = True
                     self.soft_bridge_cell[i].active(newMap)
-                    return (newMap.map, b)
-        return (map, b)
-    
-    # def touch_split_cell(self, b: Block):
-    #     if b.is_standing():
-    #         for i in range(0,len(self.split_cell)):
-    #             if (b.p1.x == self.split_cell[i].pos.x and b.p1.y == self.split_cell[i].pos.y):
-    #                 if self.split_cell[i].part1.x < self.split_cell[i].part2.x:
-    #                     return b.split_block(self.split_cell[i].part1, self.split_cell[i].part2)
-    #                 elif self.split_cell[i].part1.x == self.split_cell[i].part2.x:
-    #                     if self.split_cell[i].part1.y < self.split_cell[i].part2.y:
-    #                         return b.split_block(self.split_cell[i].part1, self.split_cell[i].part2)
-    #                     else:
-    #                         return b.split_block(self.split_cell[i].part2, self.split_cell[i].part1)
-    #                 else:
-    #                     return b.split_block(self.split_cell[i].part2, self.split_cell[i].part1)
-    #     return b
-
-        
+        if change: return (newMap.map, b)
+        else: return (map,b)
 
     def done(self, b: Block) -> bool:
         # check xem bài toán đã hoàn thành
