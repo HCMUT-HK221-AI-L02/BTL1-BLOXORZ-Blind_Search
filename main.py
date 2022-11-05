@@ -88,7 +88,7 @@ def main():
     # Thông tin sơ bộ:
     print("Thuat toan DFS giai duoc map 01->33.")
     print("Thuat toan GA giai duoc map 01->04.")
-    level_file: str = input("Nhap file input (VD: level/level01.txt): ")
+    level_file: str = input("Nhap file input (VD: level/level01.json): ")
     try:
         open(level_file, 'rb')
     except OSError:

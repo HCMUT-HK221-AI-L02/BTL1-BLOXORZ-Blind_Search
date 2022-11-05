@@ -93,7 +93,7 @@ class Member:
     def checkFitness(self, terrain: Terrain) -> bool: # False là member sẽ bị kill
         # Tạo block, chạy thử, đồng thời check reach_goal
         (block, stop_idx, remain) = self.test_move(terrain)
-        # Check xem có out of bound không, nếu có thì thu hồi bước
+        # Check xem có out of bound không, nếu có đi trả tín hiệu kill block
         if stop_idx == -1: return False
         elif stop_idx != (len(self.path) - 1): return False
         # Di chuyển xong, sau đó lấy tọa độ để tính fitness
