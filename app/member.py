@@ -36,7 +36,7 @@ class Member:
                 b = block.right()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else:
@@ -46,7 +46,7 @@ class Member:
                 b = block.left()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
@@ -56,7 +56,7 @@ class Member:
                 b = block.down()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
@@ -66,7 +66,7 @@ class Member:
                 b = block.up()
                 if terrain.can_hold(b, map):
                     (map, block) = terrain.touch_special_cell(b, map)
-                    if block.control != None: block = block.join_blocK()
+                    if block.control != None: block = block.join_block()
                     ave_pos.append(block.ave_pos_cal())
                     continue
                 else: 
@@ -93,7 +93,7 @@ class Member:
     def checkFitness(self, terrain: Terrain) -> bool: # False là member sẽ bị kill
         # Tạo block, chạy thử, đồng thời check reach_goal
         (block, stop_idx, remain) = self.test_move(terrain)
-        # Check xem có out of bound không, nếu có thì thu hồi bước
+        # Check xem có out of bound không, nếu có đi trả tín hiệu kill block
         if stop_idx == -1: return False
         elif stop_idx != (len(self.path) - 1): return False
         # Di chuyển xong, sau đó lấy tọa độ để tính fitness

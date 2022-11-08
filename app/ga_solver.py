@@ -7,9 +7,8 @@ from random import choice, choices
 class GA_Solver:
     # Class này nhằm giải bài toán, sử dụng dữ liệu đầu vào là terrain được tạo ban đầu,
     # cùng các tham số về GA, xuất kết quả solve là paths
-    def __init__(self, mem_number, select_rate, duplicate_rate, evo_rate):
+    def __init__(self, mem_number, duplicate_rate, evo_rate):
         self.mem_number = mem_number
-        self.select_rate = select_rate
         self.duplicate_rate = duplicate_rate
         self.evo_rate = evo_rate
 
@@ -20,6 +19,7 @@ class GA_Solver:
         + Tạo quần thể
         + Tạo list chứa đáp án
         + Tạo biến đếm tổng ID
+        + Tạo biến đếm thế hệ
         """
         self.terrain = terrain
         path = []
@@ -62,19 +62,13 @@ class GA_Solver:
                     new_child.append(child)
                 population.extend(new_child)
             
-            # Thực hiện mutation, tính lại fitness và OOB, check xem có đáp án
+            # Thực hiện mutation, tính lại fitness
             # Tỉ lệ một cá thể bị đột biến là bằng nhau
             evo_number = int(len(population)*self.evo_rate)
             for i in range(evo_number):
                 mem = choice(population)
                 mem.evo()
-                if mem.checkFitness(self.terrain) == False:
-                    population.remove(mem)
-                else:
-                    # Check có đáp án
-                    if mem.reach_goal == True:
-                        path = mem.path
-                        return path
+                mem.checkFitness(self.terrain)
 
             # In kết quả đại diện cho generation:
             max_fitness = population[0].fitness

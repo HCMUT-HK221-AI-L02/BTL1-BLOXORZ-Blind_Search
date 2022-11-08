@@ -129,9 +129,3 @@ dmypy.json
 .pyre/
 
 result/
-
-log/
-
-test.py
-test.txt
-sol.txt
