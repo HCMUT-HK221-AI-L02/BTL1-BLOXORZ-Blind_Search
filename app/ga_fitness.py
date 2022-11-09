@@ -5,6 +5,7 @@ from app.terrain import Terrain
 from app.block import Block
 from app.move import Move
 from app.member import Member
+from app.ga_penaltymap import PenaltyMap
 
 # Nội dung các hàm tính
 def test_move(member: Member, terrain: Terrain):
@@ -13,10 +14,6 @@ def test_move(member: Member, terrain: Terrain):
     block = Block(start_pos, start_pos)
     map = terrain.map
     stop_idx = -1
-    remain_rate = 0.7
-    remain_distance_trigger = 3
-    num_step_back = 5
-    ave_pos = []
     # Di chuyển block, nếu có thay đổi thì update map
     # Nếu bị rớt khỏi map phải dừng lại
     for step in member.path:
@@ -30,7 +27,6 @@ def test_move(member: Member, terrain: Terrain):
             if terrain.can_hold(b, map):
                 (map, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                ave_pos.append(block.ave_pos_cal())
                 continue
             else:
                 stop_idx = stop_idx - 1
@@ -40,7 +36,6 @@ def test_move(member: Member, terrain: Terrain):
             if terrain.can_hold(b, map):
                 (map, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                ave_pos.append(block.ave_pos_cal())
                 continue
             else: 
                 stop_idx = stop_idx - 1
@@ -50,7 +45,6 @@ def test_move(member: Member, terrain: Terrain):
             if terrain.can_hold(b, map):
                 (map, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                ave_pos.append(block.ave_pos_cal())
                 continue
             else: 
                 stop_idx = stop_idx - 1
@@ -60,7 +54,6 @@ def test_move(member: Member, terrain: Terrain):
             if terrain.can_hold(b, map):
                 (map, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                ave_pos.append(block.ave_pos_cal())
                 continue
             else: 
                 stop_idx = stop_idx - 1
@@ -72,20 +65,13 @@ def test_move(member: Member, terrain: Terrain):
             else:
                 stop_idx = stop_idx - 1
                 break
-        else: continue  
-    # Tính penalty rồi trả kết quả
-    remain = 1
-    if len(ave_pos) >= num_step_back + 1:
-        for i in range(num_step_back, len(ave_pos)):
-            dis = (ave_pos[i].x - ave_pos[i-num_step_back].x)**2
-            dis = dis + (ave_pos[i].y - ave_pos[i-num_step_back].y)**2
-            dis = dis**(1/2)
-            if dis <= remain_distance_trigger: remain = remain*remain_rate
-    return (block, stop_idx, remain)
+        else: continue      
+    return (block, stop_idx)
 
-def checkFitness(member: Member, terrain: Terrain) -> bool: # False là member sẽ bị kill
+def checkFitness(member: Member, terrain: Terrain, env: PenaltyMap) -> bool: 
+    # False là member sẽ bị kill
     # Tạo block, chạy thử, đồng thời check reach_goal
-    (block, stop_idx, remain) = test_move(member, terrain)
+    (block, stop_idx) = test_move(member, terrain)
     # Check xem có out of bound không, nếu có đi trả tín hiệu kill block
     if stop_idx == -1: return False
     elif stop_idx != (len(member.path) - 1): return False
@@ -96,6 +82,13 @@ def checkFitness(member: Member, terrain: Terrain) -> bool: # False là member s
     dStart = dStart**(0.5) + 1
     dGoal = (ave_px - terrain.goal.x)**2 + (ave_py - terrain.goal.y)**2
     dGoal = dGoal**(0.5) + 1
-    member.fitness = remain*len(member.path)*dStart/dGoal        
+    remain = env.penvalue(block.p1, block.p2)
+    member.fitness = remain*dStart/dGoal     
+    # Lưu lại position
+    member.p1.x = block.p1.x
+    member.p1.y = block.p1.y
+    member.p2.x = block.p2.x
+    member.p2.y = block.p2.y
+    # Kiểm tra về đích và kết thúc
     if terrain.done(block): member.reach_goal = True
     return True

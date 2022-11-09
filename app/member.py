@@ -1,7 +1,6 @@
 # Import các file và thư viện liên quan
-from app.terrain import Terrain
 from app.move import Move
-from app.block import Block
+from app.position import Position
 from random import choice
 
 # Định nghĩa class Member là một cá thể trong quần thể
@@ -13,6 +12,8 @@ class Member:
         self.path = path[:len(path)]
         self.fitness = 0
         self.reach_goal = False
+        self.p1 = Position(0, 0)
+        self.p2 = Position(0, 0)
      
     def take_step(self,):
         # Đi thêm 1 bước random

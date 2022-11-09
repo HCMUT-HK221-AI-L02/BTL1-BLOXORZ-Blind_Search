@@ -2,15 +2,17 @@
 from app.terrain import Terrain
 from app.member import Member
 from app.ga_fitness import *
+from app.ga_penaltymap import PenaltyMap
 from random import choice, choices
 
 # Định nghĩa class GA_Solver
 class GA_Solver:
     # Class này nhằm giải bài toán, sử dụng dữ liệu đầu vào là terrain được tạo ban đầu,
     # cùng các tham số về GA, xuất kết quả solve là paths
-    def __init__(self, mem_number, duplicate_rate, evo_rate):
+    def __init__(self, mem_number, duplicate_rate, penalty_rate, evo_rate):
         self.mem_number = mem_number
         self.duplicate_rate = duplicate_rate
+        self.penalty_rate = penalty_rate
         self.evo_rate = evo_rate
 
     def solve(self, terrain: Terrain):
@@ -27,6 +29,7 @@ class GA_Solver:
         population = []
         sID = 0
         gen_count = 0
+        env = PenaltyMap(terrain.map, self.penalty_rate)
 
         #----------------------------------------------------------------
         # Tạo vòng lặp cho đến khi tìm thấy kết quả
@@ -43,7 +46,7 @@ class GA_Solver:
             for mem in population:
                 mem.take_step()
                 # Check Out of Bound và tính fitness
-                if checkFitness(mem, self.terrain) == True:
+                if checkFitness(mem, self.terrain, env) == True:
                     newPopulation.append(mem)
                     # Check có đáp án
                     if mem.reach_goal == True:
@@ -69,7 +72,12 @@ class GA_Solver:
             for i in range(evo_number):
                 mem = choice(population)
                 mem.evo()
-                checkFitness(mem, self.terrain)
+                checkFitness(mem, self.terrain, env)
+
+            # Cập nhật lại môi trường
+            for mem in population:
+                env.update(mem.p1)
+                env.update(mem.p2)
 
             # In kết quả đại diện cho generation:
             max_fitness = population[0].fitness

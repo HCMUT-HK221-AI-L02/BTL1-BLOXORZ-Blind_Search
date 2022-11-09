@@ -123,13 +123,14 @@ def main():
             jsontext = json.loads(f.read())
             mem_number = jsontext["mem_number"]
             duplicate_rate = jsontext["duplicate_rate"]
+            penalty_rate = jsontext["penalty_rate"]
             evo_rate = jsontext["evo_rate"]
             f.close()
             # Giải bài toán
             print("Start at: " + str(terrain.start))
             print("End at: " + str(terrain.goal))
             start_time = time.time()
-            solver = GA_Solver(mem_number, duplicate_rate, evo_rate)
+            solver = GA_Solver(mem_number, duplicate_rate, penalty_rate, evo_rate)
             paths = solver.solve(terrain)
     
     else:
