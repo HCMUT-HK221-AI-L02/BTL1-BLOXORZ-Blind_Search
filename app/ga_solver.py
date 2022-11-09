@@ -1,6 +1,7 @@
 # Import các file và thư viện liên quan
 from app.terrain import Terrain
 from app.member import Member
+from app.ga_fitness import *
 from random import choice, choices
 
 # Định nghĩa class GA_Solver
@@ -42,7 +43,7 @@ class GA_Solver:
             for mem in population:
                 mem.take_step()
                 # Check Out of Bound và tính fitness
-                if mem.checkFitness(self.terrain) == True:
+                if checkFitness(mem, self.terrain) == True:
                     newPopulation.append(mem)
                     # Check có đáp án
                     if mem.reach_goal == True:
@@ -68,7 +69,7 @@ class GA_Solver:
             for i in range(evo_number):
                 mem = choice(population)
                 mem.evo()
-                mem.checkFitness(self.terrain)
+                checkFitness(mem, self.terrain)
 
             # In kết quả đại diện cho generation:
             max_fitness = population[0].fitness

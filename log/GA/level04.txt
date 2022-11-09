@@ -1,6 +1,6 @@
 Algorithm: GA
-Time Consuming: 13.651078462600708 Secs
-Memory Consuming: 16.13671875 MB
+Time Consuming: 8.747490167617798 Secs
+Memory Consuming: 14.625 MB
 
 STEP 0
     Block Positions: p1: [1,5], p2: [1,5]
@@ -67,6 +67,38 @@ STEP 3
 ====================================
 
 STEP 4
+    Block Positions: p1: [0,3], p2: [0,4]
+    Block Control: None
+    Move: Move.Down
+
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
+====================================
+
+STEP 5
+    Block Positions: p1: [0,2], p2: [0,2]
+    Block Control: None
+    Move: Move.Up
+
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
+====================================
+
+STEP 6
     Block Positions: p1: [1,2], p2: [2,2]
     Block Control: None
     Move: Move.Right
@@ -82,7 +114,7 @@ STEP 4
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 5
+STEP 7
     Block Positions: p1: [3,2], p2: [3,2]
     Block Control: None
     Move: Move.Right
@@ -98,7 +130,7 @@ STEP 5
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 6
+STEP 8
     Block Positions: p1: [3,0], p2: [3,1]
     Block Control: None
     Move: Move.Up
@@ -114,7 +146,7 @@ STEP 6
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 7
+STEP 9
     Block Positions: p1: [4,0], p2: [4,1]
     Block Control: None
     Move: Move.Right
@@ -130,7 +162,7 @@ STEP 7
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 8
+STEP 10
     Block Positions: p1: [5,0], p2: [5,1]
     Block Control: None
     Move: Move.Right
@@ -146,7 +178,7 @@ STEP 8
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 9
+STEP 11
     Block Positions: p1: [6,0], p2: [6,1]
     Block Control: None
     Move: Move.Right
@@ -162,7 +194,7 @@ STEP 9
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 10
+STEP 12
     Block Positions: p1: [7,0], p2: [7,1]
     Block Control: None
     Move: Move.Right
@@ -178,7 +210,7 @@ STEP 10
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 11
+STEP 13
     Block Positions: p1: [8,0], p2: [8,1]
     Block Control: None
     Move: Move.Right
@@ -194,7 +226,7 @@ STEP 11
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 12
+STEP 14
     Block Positions: p1: [9,0], p2: [9,1]
     Block Control: None
     Move: Move.Right
@@ -210,7 +242,7 @@ STEP 12
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 13
+STEP 15
     Block Positions: p1: [9,2], p2: [9,2]
     Block Control: None
     Move: Move.Down
@@ -226,7 +258,7 @@ STEP 13
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 14
+STEP 16
     Block Positions: p1: [10,2], p2: [11,2]
     Block Control: None
     Move: Move.Right
@@ -242,7 +274,7 @@ STEP 14
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 15
+STEP 17
     Block Positions: p1: [10,3], p2: [11,3]
     Block Control: None
     Move: Move.Down
@@ -258,7 +290,7 @@ STEP 15
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 16
+STEP 18
     Block Positions: p1: [10,4], p2: [11,4]
     Block Control: None
     Move: Move.Down
@@ -274,7 +306,7 @@ STEP 16
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 17
+STEP 19
     Block Positions: p1: [10,5], p2: [11,5]
     Block Control: None
     Move: Move.Down
@@ -290,7 +322,7 @@ STEP 17
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 18
+STEP 20
     Block Positions: p1: [10,6], p2: [11,6]
     Block Control: None
     Move: Move.Down
@@ -306,7 +338,7 @@ STEP 18
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 19
+STEP 21
     Block Positions: p1: [10,7], p2: [11,7]
     Block Control: None
     Move: Move.Down
@@ -322,7 +354,7 @@ STEP 19
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 20
+STEP 22
     Block Positions: p1: [12,7], p2: [12,7]
     Block Control: None
     Move: Move.Right
@@ -338,7 +370,7 @@ STEP 20
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 21
+STEP 23
     Block Positions: p1: [12,5], p2: [12,6]
     Block Control: None
     Move: Move.Up
@@ -354,7 +386,39 @@ STEP 21
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 22
+STEP 24
+    Block Positions: p1: [12,7], p2: [12,7]
+    Block Control: None
+    Move: Move.Down
+
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
+====================================
+
+STEP 25
+    Block Positions: p1: [12,5], p2: [12,6]
+    Block Control: None
+    Move: Move.Up
+
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
+	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
+	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
+====================================
+
+STEP 26
     Block Positions: p1: [11,5], p2: [11,6]
     Block Control: None
     Move: Move.Left
@@ -370,7 +434,7 @@ STEP 22
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 23
+STEP 27
     Block Positions: p1: [10,5], p2: [10,6]
     Block Control: None
     Move: Move.Left
@@ -386,72 +450,8 @@ STEP 23
 	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
 ====================================
 
-STEP 24
-    Block Positions: p1: [9,5], p2: [9,6]
-    Block Control: None
-    Move: Move.Left
-
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
-====================================
-
-STEP 25
-    Block Positions: p1: [8,5], p2: [8,6]
-    Block Control: None
-    Move: Move.Left
-
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
-====================================
-
-STEP 26
-    Block Positions: p1: [7,5], p2: [7,6]
-    Block Control: None
-    Move: Move.Left
-
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
-====================================
-
-STEP 27
-    Block Positions: p1: [8,5], p2: [8,6]
-    Block Control: None
-    Move: Move.Right
-
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
-	1 1 1 1 0 0 0 0 0 1 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 0 0 0 0 0 1 1 0 0 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	1 1 1 0 0 1 1 1 1 4 4 4 4 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 1 4 
-	0 0 0 0 0 1 1 1 0 0 4 4 4 4 
-====================================
-
 STEP 28
-    Block Positions: p1: [7,5], p2: [7,6]
+    Block Positions: p1: [9,5], p2: [9,6]
     Block Control: None
     Move: Move.Left
 
@@ -469,7 +469,7 @@ STEP 28
 STEP 29
     Block Positions: p1: [8,5], p2: [8,6]
     Block Control: None
-    Move: Move.Right
+    Move: Move.Left
 
 	0 0 0 4 4 4 4 4 4 4 0 0 0 0 
 	0 0 0 4 4 4 4 4 4 4 0 0 0 0 

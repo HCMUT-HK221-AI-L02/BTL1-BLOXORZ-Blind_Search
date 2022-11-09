@@ -1,5 +1,5 @@
 {
-    "mem_number": 2000,
+    "mem_number": 100,
     "duplicate_rate": 1,
     "evo_rate": 0.05
 }

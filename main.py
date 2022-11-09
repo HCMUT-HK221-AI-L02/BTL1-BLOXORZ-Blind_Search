@@ -112,7 +112,7 @@ def main():
             paths = solver.solve(terrain)
 
     elif algorithm == "GA":
-        if int(level_file[11:13]) > 4:
+        if int(level_file[11:13]) > 33:
             print("Map nam ngoai kha nang giai cua thuat toan GA.")
             sys.exit()
         else:
