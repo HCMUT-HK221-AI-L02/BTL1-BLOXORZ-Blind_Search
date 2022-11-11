@@ -1,0 +1,12 @@
+# Thực hiện chọn lọc tự nhiên cho đến khi mất một số lượng nhất định
+    # Tính tỉ lệ bị select
+    kill_select_rate = []
+    for mem in population:
+        kill_select_rate.append(1/mem.fitness)
+    # loại trừ
+    select_number = int(self.select_rate*self.mem_number)
+    for i in range(select_number):
+        pick = choices(population, weights = kill_select_rate, k = 1)
+        pick_idx = population.index(pick[0])
+        population.pop(pick_idx)
+        kill_select_rate.pop(pick_idx)

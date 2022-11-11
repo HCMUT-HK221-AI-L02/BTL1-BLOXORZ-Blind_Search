@@ -112,24 +112,17 @@ def main():
             paths = solver.solve(terrain)
 
     elif algorithm == "GA":
-        if int(level_file[11:13]) > 4:
+        if int(level_file[11:13]) > 33:
             print("Map nam ngoai kha nang giai cua thuat toan GA.")
             sys.exit()
         else:
             process = psutil.Process(os.getpid())
             print("-------------------Giai bai toan-------------------------")
-            # Đọc file config của GA
-            f = open("app/ga_config.json", 'r')
-            jsontext = json.loads(f.read())
-            mem_number = jsontext["mem_number"]
-            duplicate_rate = jsontext["duplicate_rate"]
-            evo_rate = jsontext["evo_rate"]
-            f.close()
             # Giải bài toán
             print("Start at: " + str(terrain.start))
             print("End at: " + str(terrain.goal))
             start_time = time.time()
-            solver = GA_Solver(mem_number, duplicate_rate, evo_rate)
+            solver = GA_Solver()
             paths = solver.solve(terrain)
     
     else:
