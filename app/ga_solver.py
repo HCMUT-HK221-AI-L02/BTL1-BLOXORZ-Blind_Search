@@ -3,6 +3,7 @@ from app.terrain import Terrain
 from app.member import Member
 from app.ga_fitness import *
 from app.ga_penaltymap import PenaltyMap
+from app.ga_config2 import *
 from random import choice, choices
 
 # Định nghĩa class GA_Solver
@@ -30,6 +31,8 @@ class GA_Solver:
         sID = 0
         gen_count = 0
         env = PenaltyMap(terrain.map, self.penalty_rate)
+
+        # Khởi tạo dân số đầu tiên, có số dân số là 
 
         #----------------------------------------------------------------
         # Tạo vòng lặp cho đến khi tìm thấy kết quả
