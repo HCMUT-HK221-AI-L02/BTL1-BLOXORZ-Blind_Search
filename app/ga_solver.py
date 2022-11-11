@@ -32,43 +32,45 @@ class GA_Solver:
         gen_count = 0
         env = PenaltyMap(terrain.map, self.penalty_rate)
 
-        # Khởi tạo dân số đầu tiên, có số dân số là 
+        # Khởi tạo dân số đầu tiên, có số dân số là SELECTION_RATE*MEM_NUMBER
+        for i in range(SELECTION_RATE*MEM_NUMBER):
+            sID = sID + 1
+            newMem = Member(sID)
+            population.append(newMem)
 
         #----------------------------------------------------------------
         # Tạo vòng lặp cho đến khi tìm thấy kết quả
         while len(path) == 0:
             gen_count = gen_count + 1
-            # Tạo thêm member cho đủ số lượng
-            while len(population) < self.mem_number:
-                sID = sID + 1
-                newMem = Member(sID)
-                population.append(newMem)
-            
-            # Mỗi member đi thêm một bước
+            # Tạo thêm member
+            l = len(population)
             newPopulation = []
-            for mem in population:
-                mem.take_step()
-                # Check Out of Bound và tính fitness
-                if checkFitness(mem, self.terrain, env) == True:
-                    newPopulation.append(mem)
-                    # Check có đáp án
-                    if mem.reach_goal == True:
-                        path = mem.path
-                        return path
-            population = newPopulation
-
-            # Thực hiện duplicate cho đến khi đủ dân số
-            if len(population) < self.mem_number:
-                duplicate_select_rate = []
-                new_child = []
-                for mem in population: duplicate_select_rate.append(mem.fitness)                
-                for i in range(int(self.duplicate_rate*len(population))):
+            for i in range(l):
+                # Tạo thêm 4 mem con và ký hiệu 5 mem này
+                mem_family = []
+                mem_family.append(population[i])
+                for j in range(4):
                     sID = sID + 1
-                    p = choices(population, weights = duplicate_select_rate, k = 1)[0]
-                    child = Member(sID, path = p.path)
-                    new_child.append(child)
-                population.extend(new_child)
+                    newMem = Member(sID)    
+                    mem_family.append(newMem)
+                # family này, mỗi con đi thêm 1 bước trong [LRUDS]
+                mem_family[0].take_step('Space')
+                mem_family[1].take_step('Left')
+                mem_family[2].take_step('Right')
+                mem_family[3].take_step('Up')
+                mem_family[4].take_step('Down')
+                # Check fitness cho family
+                for j in range(4):
+                    if checkFitness(mem_family[j], self.terrain, env) == True:
+                        newPopulation.append(mem_family[j])
+                        # Check có đáp án
+                        if mem_family[j].reach_goal == True:
+                            path = mem_family[j].path
+                            return path
+            # Đổi population thành new population
+            population = newPopulation                               
             
+
             # Thực hiện mutation, tính lại fitness
             # Tỉ lệ một cá thể bị đột biến là bằng nhau
             evo_number = int(len(population)*self.evo_rate)
@@ -77,10 +79,12 @@ class GA_Solver:
                 mem.evo()
                 checkFitness(mem, self.terrain, env)
 
+
             # Cập nhật lại môi trường
             for mem in population:
                 env.update(mem.p1)
                 env.update(mem.p2)
+
 
             # In kết quả đại diện cho generation:
             max_fitness = population[0].fitness
@@ -92,4 +96,7 @@ class GA_Solver:
             print("Best member ID: ", best_mem.id)
             print("Max Fitness: ", best_mem.fitness)
             print("Path: ", best_mem.print_path())
+
+
+
 

@@ -15,13 +15,13 @@ class Member:
         self.p1 = Position(0, 0)
         self.p2 = Position(0, 0)
      
-    def take_step(self,):
+    def take_step(self, step):
         # Đi thêm 1 bước random
-        legal_step = []
-        for step in Move:
-            legal_step.append(step)
-        next_step = choice(legal_step)
-        self.path.append(next_step)
+        if step == 'Space': self.append(Move.Space)
+        elif step == 'Left': self.append(Move.Left)
+        elif step == 'Right': self.append(Move.Right)
+        elif step == 'Up': self.append(Move.Up)
+        elif step == 'Down': self.append(Move.Down)
 
     def evo(self,):
         # Một cá thể bị đột biến sẽ quay lại 1/3 quảng đường để đi ngẫu nhiên
