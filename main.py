@@ -118,14 +118,6 @@ def main():
         else:
             process = psutil.Process(os.getpid())
             print("-------------------Giai bai toan-------------------------")
-            # Đọc file config của GA
-            f = open("app/ga_config.json", 'r')
-            jsontext = json.loads(f.read())
-            mem_number = jsontext["mem_number"]
-            duplicate_rate = jsontext["duplicate_rate"]
-            penalty_rate = jsontext["penalty_rate"]
-            evo_rate = jsontext["evo_rate"]
-            f.close()
             # Giải bài toán
             print("Start at: " + str(terrain.start))
             print("End at: " + str(terrain.goal))
