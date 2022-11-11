@@ -6,7 +6,7 @@ from random import choice
 # Định nghĩa class Member là một cá thể trong quần thể
 class Member:
     # Mỗi obj trong class này đại diện cho một đáp án, là chuỗi bước di chuyển block
-    def __init__(self, id, *, path = []):
+    def __init__(self, id, path = []):
         self.id = id
         # Nếu nhập vào một list rỗng thì tạo một obj list rỗng mới
         self.path = path[:len(path)]
@@ -16,12 +16,12 @@ class Member:
         self.p2 = Position(0, 0)
      
     def take_step(self, step):
-        # Đi thêm 1 bước random
-        if step == 'Space': self.append(Move.Space)
-        elif step == 'Left': self.append(Move.Left)
-        elif step == 'Right': self.append(Move.Right)
-        elif step == 'Up': self.append(Move.Up)
-        elif step == 'Down': self.append(Move.Down)
+        # Đi thêm 1 bước
+        if step == 'Space': self.path.append(Move.Space)
+        elif step == 'Left': self.path.append(Move.Left)
+        elif step == 'Right': self.path.append(Move.Right)
+        elif step == 'Up': self.path.append(Move.Up)
+        elif step == 'Down': self.path.append(Move.Down)
 
     def evo(self,):
         # Một cá thể bị đột biến sẽ quay lại 1/3 quảng đường để đi ngẫu nhiên

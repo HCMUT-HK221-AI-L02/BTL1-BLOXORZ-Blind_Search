@@ -1,12 +1,12 @@
 # Object dùng để phạt member khi member đi vào vùng không thuận lợi
 
 # Thư viện cần thiết
-from app.map import Map
 from app.position import Position
+from app.ga_config2 import *
 
 # Định nghĩa class
 class PenaltyMap:
-    def __init__(self, map, penalty_rate):
+    def __init__(self, map):
         self.height = len(map)
         self.width = len(map[0])
         self.pMap = []
@@ -15,7 +15,7 @@ class PenaltyMap:
             for y in range(0, self.width):
                 row.append(1)
             self.pMap.append(row)
-        self.penalty_rate = penalty_rate
+        self.penalty_rate = PENALTY_RATE
 
     def update(self, p: Position):
         self.pMap[p.y][p.x] = self.pMap[p.y][p.x]*self.penalty_rate

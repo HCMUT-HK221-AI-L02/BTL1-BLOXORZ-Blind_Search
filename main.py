@@ -130,7 +130,7 @@ def main():
             print("Start at: " + str(terrain.start))
             print("End at: " + str(terrain.goal))
             start_time = time.time()
-            solver = GA_Solver(mem_number, duplicate_rate, penalty_rate, evo_rate)
+            solver = GA_Solver()
             paths = solver.solve(terrain)
     
     else:
