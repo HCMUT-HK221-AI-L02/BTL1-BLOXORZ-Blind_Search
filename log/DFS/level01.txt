@@ -1,6 +1,6 @@
 Algorithm: DFS
-Time Consuming: 0.0019969940185546875 Secs
-Memory Consuming: 14.25390625 MB
+Time Consuming: 0.0019974708557128906 Secs
+Memory Consuming: 14.28125 MB
 
 STEP 0
     Block Positions: p1: [1,1], p2: [1,1]
