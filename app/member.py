@@ -15,6 +15,8 @@ class Member:
         self.p1 = Position(0, 0)
         self.p2 = Position(0, 0)
         # Thêm phần block với map
+        self.block = None
+        self.map = None
      
     def take_step(self, step):
         # Đi thêm 1 bước
