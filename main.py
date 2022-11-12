@@ -12,7 +12,7 @@ import sys
 import time
 import json
 import os
-# import psutil
+import psutil
 
 
 def print_path(paths):
@@ -103,7 +103,7 @@ def main():
             print("Map nam ngoai kha nang giai cua thuat toan DFS.")
             sys.exit()
         else:
-            # process = psutil.Process(os.getpid())
+            process = psutil.Process(os.getpid())
             print("-------------------Giai bai toan-------------------------")
             print("Start at: " + str(terrain.start))
             print("End at: " + str(terrain.goal))
@@ -116,7 +116,7 @@ def main():
             print("Map nam ngoai kha nang giai cua thuat toan GA.")
             sys.exit()
         else:
-            # process = psutil.Process(os.getpid())
+            process = psutil.Process(os.getpid())
             print("-------------------Giai bai toan-------------------------")
             # Giải bài toán
             print("Start at: " + str(terrain.start))

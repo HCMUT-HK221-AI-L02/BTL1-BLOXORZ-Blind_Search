@@ -31,9 +31,10 @@ class GA_Solver:
         env = PenaltyMap(terrain.map)
 
         # Khởi tạo dân số đầu tiên, có số dân số là SELECTION_RATE*MEM_NUMBER
+        start_block = Block(self.terrain.start, self.terrain.start, None)
         for i in range(int(SELECTION_RATE*MEM_NUMBER)):
             sID = sID + 1
-            newMem = Member(sID)
+            newMem = Member(sID, [], start_block, self.terrain.map, 1)
             population.append(newMem)
 
         #----------------------------------------------------------------
@@ -55,9 +56,8 @@ class GA_Solver:
                 mem_family.append(population[i])
                 for j in range(4):
                     sID = sID + 1
-                    newMem = Member(sID, mem_family[0].path)
-                    # newMem.block = 
-                    # newMem.map =     
+                    newMem = Member(sID, mem_family[0].path, mem_family[0].block, \
+                         mem_family[0].map, mem_family[0].toggle)
                     mem_family.append(newMem)
                 # family này, mỗi con đi thêm 1 bước trong [LRUDS]
                 mem_family[0].take_step('Space')
@@ -110,18 +110,18 @@ class GA_Solver:
 
             # Thực hiện mutation, tính lại fitness
             # Tỉ lệ một cá thể bị đột biến là bằng nhau
-            evo_number = int(len(population)*EVO_RATE)
-            for i in range(evo_number):
-                mem = choice(population)
-                mem.evo()
-                checkFitness(mem, self.terrain, env)
+            # evo_number = int(len(population)*EVO_RATE)
+            # for i in range(evo_number):
+            #     mem = choice(population)
+            #     mem.evo()
+            #     checkFitness(mem, self.terrain, env)
 
 
             # Cập nhật lại môi trường
             env.refill()
             for mem in population:
-                env.update(mem.p1)
-                env.update(mem.p2)
+                env.update(mem.block.p1)
+                env.update(mem.block.p2)
 
 
             # In kết quả đại diện cho generation:
@@ -134,8 +134,8 @@ class GA_Solver:
             print("Best member ID: ", best_mem.id)
             print("Max Fitness: ", best_mem.fitness)
             # print("Path: ", best_mem.print_path())
-            print("Best member p1: ", best_mem.p1)
-            print("Best member p2: ", best_mem.p2)
+            print("Best member p1: ", best_mem.block.p1)
+            print("Best member p2: ", best_mem.block.p2)
 
 
             # Log file to Debug
@@ -157,7 +157,7 @@ class GA_Solver:
             f.write("\n")
             for i in range(0,len(population)):
                 str1 = str(i + 1) + "\t" + str(population[i].id) + "\t" + \
-                     str(population[i].p1) + "\t" + str(population[i].p2)
+                     str(population[i].block.p1) + "\t" + str(population[i].block.p2)
                 f.write(str1 + "\n")
             f.close()
 
