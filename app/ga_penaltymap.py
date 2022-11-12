@@ -2,7 +2,7 @@
 
 # Thư viện cần thiết
 from app.position import Position
-from app.ga_config2 import *
+from app.ga_config import *
 
 # Định nghĩa class
 class PenaltyMap:
@@ -24,3 +24,8 @@ class PenaltyMap:
         max = self.pMap[p1.y][p1.x]
         if self.pMap[p2.y][p2.x] > max: max = self.pMap[p2.y][p2.x]
         return max
+
+    def refill(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                self.pMap[y][x] = self.pMap[y][x]*REFILL_RATE

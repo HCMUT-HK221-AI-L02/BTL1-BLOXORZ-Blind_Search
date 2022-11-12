@@ -1,20 +1,23 @@
 # Import các file và thư viện liên quan
 from app.move import Move
-from app.position import Position
-from random import choice
+from app.block import Block
+
 
 # Định nghĩa class Member là một cá thể trong quần thể
 class Member:
     # Mỗi obj trong class này đại diện cho một đáp án, là chuỗi bước di chuyển block
-    def __init__(self, id, path = []):
+    def __init__(self, id, path, block: Block, map, toggle):
         self.id = id
         # Nếu nhập vào một list rỗng thì tạo một obj list rỗng mới
         self.path = path[:len(path)]
         self.fitness = 0
         self.reach_goal = False
-        self.p1 = Position(0, 0)
-        self.p2 = Position(0, 0)
-     
+        # Đọc vào block, map và toggle
+        self.block = Block(block.p1, block.p2, block.control)
+        self.map = map
+        self.toggle = toggle
+
+
     def take_step(self, step):
         # Đi thêm 1 bước
         if step == 'Space': self.path.append(Move.Space)
@@ -23,10 +26,12 @@ class Member:
         elif step == 'Up': self.path.append(Move.Up)
         elif step == 'Down': self.path.append(Move.Down)
 
+
     def evo(self,):
         # Một cá thể bị đột biến sẽ quay lại 1/3 quảng đường để đi ngẫu nhiên
         if len(self.path) == 0: return
         self.path = self.path[:int(len(self.path)*2/3)]
+
 
     def print_path(self):
         # Chuyển list gồm các obj moves thành string kết quả

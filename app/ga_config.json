@@ -1,6 +1,0 @@
-{
-    "mem_number": 50,
-    "duplicate_rate": 1,
-    "penalty_rate": 0.995,
-    "evo_rate": 0.05
-}
