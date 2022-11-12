@@ -14,6 +14,7 @@ class Member:
         self.reach_goal = False
         self.p1 = Position(0, 0)
         self.p2 = Position(0, 0)
+        # Thêm phần block với map
      
     def take_step(self, step):
         # Đi thêm 1 bước
