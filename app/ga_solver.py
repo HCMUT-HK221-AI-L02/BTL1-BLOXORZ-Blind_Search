@@ -5,6 +5,7 @@ from app.ga_fitness import *
 from app.ga_penaltymap import PenaltyMap
 from app.ga_config2 import *
 from random import choice, choices
+import os
 
 # Định nghĩa class GA_Solver
 class GA_Solver:
@@ -39,7 +40,13 @@ class GA_Solver:
         # Tạo vòng lặp cho đến khi tìm thấy kết quả
         while len(path) == 0:
             gen_count = gen_count + 1
-            # Tạo thêm member
+            # Bỏ vào population một lượng member mới
+            # for i in range(NEW_MEM_NUMBER):
+            #     sID = sID + 1
+            #     newMem = Member(sID)
+            #     population.append(newMem)
+
+            # Quá trình duplicate
             l = len(population)
             newPopulation = []
             for i in range(l):
@@ -69,18 +76,34 @@ class GA_Solver:
             
 
             # Thực hiện chọn lọc tự nhiên cho đến khi mất một số lượng nhất định
-            #  + Tính tỉ lệ bị select
-            kill_select_rate = []
-            for mem in population:
-                kill_select_rate.append(1/mem.fitness)
-            #  + loại trừ
-            select_number = len(population) - int(SELECTION_RATE*MEM_NUMBER)
-            if select_number > 0:
-                for i in range(select_number):
-                    pick = choices(population, weights = kill_select_rate, k = 1)
-                    pick_idx = population.index(pick[0])
-                    population.pop(pick_idx)
-                    kill_select_rate.pop(pick_idx)
+            # Tính tỉ lệ bị select
+            pick_select_rate = []
+            newPopulation = []
+            select_number = int(SELECTION_RATE*MEM_NUMBER)
+            # Chỉ thực hiện loại trừ nếu population nhiều hơn có thể chứa
+            if len(population) > select_number:
+                for mem in population:
+                    pick_select_rate.append(mem.fitness)
+                # Loại trừ pha 1: giữ lại một nửa
+                select_number_p1 = int(select_number*SELECTION_P_RATE)
+                if select_number_p1 > 0:
+                    for i in range(select_number_p1):
+                        pick = choice(population)
+                        pick_idx = population.index(pick)
+                        population.pop(pick_idx)
+                        pick_select_rate.pop(pick_idx)
+                        newPopulation.append(pick)
+                # Loại trừ pha 2: loại trừ có trọng số
+                select_number_p2 = select_number - select_number_p1
+                if select_number_p2 > 0:
+                    for i in range(select_number_p2):
+                        pick = choices(population, weights = pick_select_rate, k = 1)[0]
+                        pick_idx = population.index(pick)
+                        population.pop(pick_idx)
+                        pick_select_rate.pop(pick_idx)
+                        newPopulation.append(pick)
+                # Nhập hai pha chung
+                population = newPopulation
 
 
             # Thực hiện mutation, tính lại fitness
@@ -93,6 +116,7 @@ class GA_Solver:
 
 
             # Cập nhật lại môi trường
+            env.refill()
             for mem in population:
                 env.update(mem.p1)
                 env.update(mem.p2)
@@ -113,7 +137,9 @@ class GA_Solver:
 
 
             # Log file to Debug
-            debug_log = "debug/debug.txt"
+            debug_log = "debug/"
+            if os.path.exists(debug_log) == False: os.makedirs(debug_log)
+            debug_log = debug_log + "debug.txt"
             # Clear file 
             with open(debug_log, 'w') as file:
                 pass
@@ -128,7 +154,8 @@ class GA_Solver:
             f.write("===================ID - P1 - P2===================")
             f.write("\n")
             for i in range(0,len(population)):
-                str1 = str(i + 1) + "\t" + str(population[i].id) + "\t" + str(population[i].p1) + "\t" + str(population[i].p2)
+                str1 = str(i + 1) + "\t" + str(population[i].id) + "\t" + \
+                     str(population[i].p1) + "\t" + str(population[i].p2)
                 f.write(str1 + "\n")
             f.close()
 

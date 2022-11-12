@@ -1,6 +1,6 @@
 Algorithm: GA
-Time Consuming: 0.11200141906738281 Secs
-Memory Consuming: 34.8125 MB
+Time Consuming: 0.06399869918823242 Secs
+Memory Consuming: 14.97265625 MB
 
 STEP 0
     Block Positions: p1: [1,1], p2: [1,1]
@@ -29,9 +29,9 @@ STEP 1
 ====================================
 
 STEP 2
-    Block Positions: p1: [4,1], p2: [4,1]
+    Block Positions: p1: [2,2], p2: [3,2]
     Block Control: None
-    Move: Move.Right
+    Move: Move.Down
 
 	1 1 1 0 0 0 0 0 0 0 
 	1 1 1 1 1 1 0 0 0 0 
@@ -42,7 +42,7 @@ STEP 2
 ====================================
 
 STEP 3
-    Block Positions: p1: [4,2], p2: [4,3]
+    Block Positions: p1: [2,3], p2: [3,3]
     Block Control: None
     Move: Move.Down
 
@@ -55,7 +55,7 @@ STEP 3
 ====================================
 
 STEP 4
-    Block Positions: p1: [5,2], p2: [5,3]
+    Block Positions: p1: [4,3], p2: [4,3]
     Block Control: None
     Move: Move.Right
 
@@ -68,7 +68,7 @@ STEP 4
 ====================================
 
 STEP 5
-    Block Positions: p1: [6,2], p2: [6,3]
+    Block Positions: p1: [5,3], p2: [6,3]
     Block Control: None
     Move: Move.Right
 
@@ -81,9 +81,9 @@ STEP 5
 ====================================
 
 STEP 6
-    Block Positions: p1: [7,2], p2: [7,3]
+    Block Positions: p1: [5,4], p2: [6,4]
     Block Control: None
-    Move: Move.Right
+    Move: Move.Down
 
 	1 1 1 0 0 0 0 0 0 0 
 	1 1 1 1 1 1 0 0 0 0 
@@ -96,7 +96,7 @@ STEP 6
 STEP 7
     Block Positions: p1: [7,4], p2: [7,4]
     Block Control: None
-    Move: Move.Down
+    Move: Move.Right
 
 	1 1 1 0 0 0 0 0 0 0 
 	1 1 1 1 1 1 0 0 0 0 

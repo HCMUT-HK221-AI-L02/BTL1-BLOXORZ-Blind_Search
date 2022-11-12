@@ -15,59 +15,6 @@ def test_move(member: Member, terrain: Terrain):
     map = terrain.map
     stop_idx = -1
     # Di chuyển block, nếu có thay đổi thì update map
-    # Nếu bị rớt khỏi map phải dừng lại
-    # for step in member.path:
-    #     stop_idx = stop_idx + 1
-    #     # Nếu block bị rớt khỏi map thì dừng lại
-    #     # Update map nếu có
-    #     if step is None:
-    #         continue
-    #     elif step == Move.Right: 
-    #         b = block.right()
-    #         if terrain.can_hold(b, map):
-    #             (map, block) = terrain.touch_special_cell(b, map)
-    #             if block.control != None: block = block.join_block()
-    #             continue
-    #         else:
-    #             stop_idx = stop_idx - 1
-    #             break
-    #     elif step == Move.Left:
-    #         b = block.left()
-    #         if terrain.can_hold(b, map):
-    #             (map, block) = terrain.touch_special_cell(b, map)
-    #             if block.control != None: block = block.join_block()
-    #             continue
-    #         else: 
-    #             stop_idx = stop_idx - 1
-    #             break
-    #     elif step == Move.Down:
-    #         b = block.down()
-    #         if terrain.can_hold(b, map):
-    #             (map, block) = terrain.touch_special_cell(b, map)
-    #             if block.control != None: block = block.join_block()
-    #             continue
-    #         else: 
-    #             stop_idx = stop_idx - 1
-    #             break
-    #     elif step == Move.Up:
-    #         b = block.up()
-    #         if terrain.can_hold(b, map):
-    #             (map, block) = terrain.touch_special_cell(b, map)
-    #             if block.control != None: block = block.join_block()
-    #             continue
-    #         else: 
-    #             stop_idx = stop_idx - 1
-    #             break
-    #     elif step == Move.Space:
-    #         if block.control != None: 
-    #             block = block.switch()
-    #             continue
-    #         else:
-    #             stop_idx = stop_idx - 1
-    #             break
-    #     else: continue      
-    # return (block, stop_idx)
-
     toggle = 1
     for i in range(0,len(member.path)):
         stop_idx = stop_idx + 1   
