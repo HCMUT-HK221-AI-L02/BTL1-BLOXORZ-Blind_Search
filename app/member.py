@@ -17,6 +17,7 @@ class Member:
         # Thêm phần block với map
         self.block = None
         self.map = None
+        self.toggle = 1
      
     def take_step(self, step):
         # Đi thêm 1 bước

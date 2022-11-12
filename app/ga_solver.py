@@ -55,7 +55,9 @@ class GA_Solver:
                 mem_family.append(population[i])
                 for j in range(4):
                     sID = sID + 1
-                    newMem = Member(sID, mem_family[0].path)    
+                    newMem = Member(sID, mem_family[0].path)
+                    # newMem.block = 
+                    # newMem.map =     
                     mem_family.append(newMem)
                 # family này, mỗi con đi thêm 1 bước trong [LRUDS]
                 mem_family[0].take_step('Space')

@@ -13,84 +13,63 @@ def test_move(member: Member, terrain: Terrain):
     start_pos = terrain.start
     block = Block(start_pos, start_pos)
     map = terrain.map
-    stop_idx = -1
+    stop_idx = 0
     # Di chuyển block, nếu có thay đổi thì update map
-    toggle = 1
-    for i in range(0,len(member.path)):
-        stop_idx = stop_idx + 1   
-        toggle = toggle + 1     
-        # Nếu block bị rớt khỏi map thì dừng lại
-        # Update map nếu có
-        if member.path[i] is None:
-            continue
-        elif member.path[i] == Move.Right: 
+    member.toggle = member.toggle + 1     
+    # Nếu block bị rớt khỏi map thì dừng lại
+    # Update map nếu có
+    if len(member.path) > 0:
+        if member.path[len(member.path) - 1] == Move.Right: 
             b = block.right()
             if terrain.can_hold(b, map):
                 (m, block) = terrain.touch_special_cell(b, map)                
                 if block.control != None: block = block.join_block()
-                if m != map or block.control != b.control: toggle = 0
-                if i > 0 and member.path[i - 1] == Move.Left and toggle > 1:
+                if m != map or block.control != b.control: member.toggle = 0
+                if member.path[len(member.path) - 1 - 1] == Move.Left and member.toggle > 1:
                     stop_idx = stop_idx - 1
-                    break
-                map = m
-                continue
             else:
                 stop_idx = stop_idx - 1
-                break
-        elif member.path[i] == Move.Left:
+        elif member.path[len(member.path) - 1] == Move.Left:
             b = block.left()
             if terrain.can_hold(b, map):
                 (m, block) = terrain.touch_special_cell(b, map)                
                 if block.control != None: block = block.join_block()
-                if m != map or block.control != b.control: toggle = 0
-                if i > 0 and member.path[i - 1] == Move.Right and toggle > 1:
+                if m != map or block.control != b.control: member.toggle = 0
+                if member.path[len(member.path) - 1 - 1] == Move.Right and member.toggle > 1:
                     stop_idx = stop_idx - 1
-                    break
-                map = m
-                continue
             else: 
                 stop_idx = stop_idx - 1
-                break
-        elif member.path[i] == Move.Down:
+        elif member.path[len(member.path) - 1] == Move.Down:
             b = block.down()
             if terrain.can_hold(b, map):
                 (m, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                if m != map or block.control != b.control: toggle = 0
-                if i > 0 and member.path[i - 1] == Move.Up and toggle > 1:
+                if m != map or block.control != b.control: member.toggle = 0
+                if member.path[len(member.path) - 1 - 1] == Move.Up and member.toggle > 1:
                     stop_idx = stop_idx - 1
-                    break
-                map = m
-                continue
             else: 
                 stop_idx = stop_idx - 1
-                break
-        elif member.path[i] == Move.Up:
+        elif member.path[len(member.path) - 1] == Move.Up:
             b = block.up()
             if terrain.can_hold(b, map):
                 (m, block) = terrain.touch_special_cell(b, map)
                 if block.control != None: block = block.join_block()
-                if m != map or block.control != b.control: toggle = 0
-                if i > 0 and member.path[i - 1] == Move.Down and toggle > 1:
+                if m != map or block.control != b.control: member.toggle = 0
+                if member.path[len(member.path) - 1 - 1] == Move.Down and member.toggle > 1:
                     stop_idx = stop_idx - 1
-                    break
-                map = m
-                continue
             else: 
                 stop_idx = stop_idx - 1
-                break
-        elif member.path[i] == Move.Space:
+        elif member.path[len(member.path) - 1] == Move.Space:
             if block.control != None: 
                 block = block.switch()
-                toggle = 0
-                if member.path[i - 1] == Move.Space:
+                member.toggle = 0
+                if member.path[len(member.path) - 1 - 1] == Move.Space:
                     stop_idx = stop_idx - 1
-                    break
-                continue
             else:
                 stop_idx = stop_idx - 1
-                break
-        else: continue
+        if stop_idx == 0:
+            member.map = m 
+            member.block = block
     return (block, stop_idx)
 
 def checkFitness(member: Member, terrain: Terrain, env: PenaltyMap) -> bool: 
