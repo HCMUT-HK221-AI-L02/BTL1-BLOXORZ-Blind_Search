@@ -10,7 +10,6 @@ from app.move import Move
 
 import sys
 import time
-import json
 import os
 import psutil
 
@@ -86,8 +85,6 @@ def exe_paths(paths, terrain):
 
 def main():
     # Thông tin sơ bộ:
-    print("Thuat toan DFS giai duoc map 01->33.")
-    print("Thuat toan GA giai duoc map 01->04.")
     level_file: str = input("Nhap file input (VD: level/level01.json): ")
     try:
         open(level_file, 'rb')

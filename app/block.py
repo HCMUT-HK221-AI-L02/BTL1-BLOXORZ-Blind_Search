@@ -1,6 +1,7 @@
 # Import các file và thư viện liên quan
 from app.position import Position
 import json
+
 # Định nghĩa class Block
 class Block:
     # Class Block định nghĩa obj có 2 khối có tọa độ, với gốc tọa độ là bottom - left

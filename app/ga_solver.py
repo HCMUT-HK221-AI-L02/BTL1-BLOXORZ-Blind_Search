@@ -3,7 +3,7 @@ from app.terrain import Terrain
 from app.member import Member
 from app.ga_fitness import *
 from app.ga_penaltymap import PenaltyMap
-from app.ga_config2 import *
+from app.ga_config import *
 from random import choice, choices
 import os
 

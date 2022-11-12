@@ -1,8 +1,6 @@
 # Import các file và thư viện liên quan
 from app.move import Move
-from app.position import Position
 from app.block import Block
-from app.terrain import Terrain
 
 
 # Định nghĩa class Member là một cá thể trong quần thể

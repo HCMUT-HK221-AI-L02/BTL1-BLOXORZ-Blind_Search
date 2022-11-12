@@ -2,7 +2,7 @@
 
 # Thư viện cần thiết
 from app.position import Position
-from app.ga_config2 import *
+from app.ga_config import *
 
 # Định nghĩa class
 class PenaltyMap:
